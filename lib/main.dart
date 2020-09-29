@@ -9,9 +9,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: "Montserrat"),
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: "Montserrat"),
       home: Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: Container(
           child: LoginPage(),
         ),
@@ -28,9 +29,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    /* final mediaQueryData = MediaQuery.of(context);
+    if (mediaQueryData.orientation == Orientation.landscape) {
+      return const Text('landscape');
+    }
+    return const Text('portrait'); */
+    // ignore: dead_code
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Wrap(
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        runSpacing: 12,
         children: [
           Container(
             child: Column(
