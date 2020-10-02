@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "536408114661",
+    "firebase_url": "https://busbay-76270.firebaseio.com",
+    "project_id": "busbay-76270",
+    "storage_bucket": "busbay-76270.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536408114661:android:621f63f8ec8fc69bbd1b0c",
+        "android_client_info": {
+          "package_name": "com.example.busbay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536408114661-h7dkf4la233g3jbe3k0b68gm9b2gjcrk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.busbay",
+            "certificate_hash": "5c04795003e049db0b8203907afc03e1abc46370"
+          }
+        },
+        {
+          "client_id": "536408114661-c9pedd341vcbs7ulfjs9bo5is1v6ffkr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtvT5ClTTVDu3uolYklqw7i9IV1FrFAo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536408114661-c9pedd341vcbs7ulfjs9bo5is1v6ffkr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
