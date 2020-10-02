@@ -36,9 +36,9 @@ class _LoginPageState extends State<LoginPage> {
     return const Text('portrait'); */
     // ignore: dead_code
     return Container(
-      child: Wrap(
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        runSpacing: 12,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //runSpacing: 12,
         children: [
           Container(
             child: Column(
