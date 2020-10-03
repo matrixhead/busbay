@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+class App extends StatelessWidget {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: _initialization,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text("error");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MyApp();
+        }
+
+        return Text("i guess we need a splash screen here");
+      },
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +36,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Montserrat"),
       home: Scaffold(
-        resizeToAvoidBottomPadding: false,
         body: Container(
           child: LoginPage(),
         ),
