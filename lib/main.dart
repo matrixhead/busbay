@@ -38,8 +38,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Montserrat"),
       home: Scaffold(
-        body: Container(
-          child: LoginPage(),
+        body: StreamBuilder(
+          stream: authService.user,
+          builder: (context,snapshot){
+            if(snapshot.hasData){
+              return Home();
+            }
+            else{
+              return LoginPage();
+            }
+          }
+
+
         ),
       ),
     );
@@ -113,3 +123,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(child: Text('logged in!')),
+    );
+  }
+}
+

@@ -14,14 +14,13 @@ class AuthService {
   }
 
   void googleSignIn() async {
-
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
     final GoogleAuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    final userCredential = await _auth.signInWithCredential(credential);
+    await _auth.signInWithCredential(credential);
     print("signed in");
 
   }
