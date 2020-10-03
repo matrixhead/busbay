@@ -1,8 +1,10 @@
+import 'package:busbay/logic/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
 }
 
 class App extends StatelessWidget {
@@ -89,16 +91,19 @@ class _LoginPageState extends State<LoginPage> {
             child: Center(child: Image.asset("assets/icons/b.png")),
           ),
           Container(
-            child: Container(
-              margin: EdgeInsets.all(32),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: Color(0xFFBF1C40F),
-                  borderRadius: BorderRadius.circular(54)),
-              child: Center(
-                child: Text(
-                  "Track Bus",
-                  style: TextStyle(color: Colors.black, fontSize: 16),
+            child: InkWell(
+              onTap: () => authService.googleSignIn(),
+              child: Container(
+                margin: EdgeInsets.all(32),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                    color: Color(0xFFBF1C40F),
+                    borderRadius: BorderRadius.circular(54)),
+                child: Center(
+                  child: Text(
+                    "Track Bus",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
                 ),
               ),
             ),
