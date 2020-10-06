@@ -10,7 +10,6 @@ class AuthService {
 
   AuthService() {
     user = Observable(_auth.authStateChanges());
-
   }
 
   void googleSignIn() async {
@@ -26,4 +25,4 @@ class AuthService {
   }
 
 }
-final AuthService authService = AuthService();
+//final AuthService authService = AuthService();

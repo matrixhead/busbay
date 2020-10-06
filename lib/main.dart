@@ -1,6 +1,8 @@
 import 'package:busbay/logic/auth.dart';
+import 'package:busbay/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,22 +36,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: "Montserrat"),
-      home: Scaffold(
-        body: StreamBuilder(
-          stream: authService.user,
-          builder: (context,snapshot){
-            if(snapshot.hasData){
-              return Home();
-            }
-            else{
-              return LoginPage();
-            }
-          }
-
-
+    return Provider<AuthService>(
+      create: (context) => AuthService(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: "Montserrat"),
+        home: Scaffold(
+          body: Consumer<AuthService>(
+            builder: (context,authService,child){
+            return StreamBuilder(
+              stream: authService.user,
+              builder: (context,snapshot){
+                if(snapshot.hasData){
+                  return Home();
+                }
+                else{
+                  return LoginPage();
+                }
+              }
+            );}
+          ),
         ),
       ),
     );
@@ -100,34 +106,29 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.symmetric(horizontal: 32),
             child: Center(child: Image.asset("assets/icons/b.png")),
           ),
-          Container(
-            child: InkWell(
-              onTap: () => authService.googleSignIn(),
-              child: Container(
-                margin: EdgeInsets.all(32),
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    color: Color(0xFFBF1C40F),
-                    borderRadius: BorderRadius.circular(54)),
-                child: Center(
-                  child: Text(
-                    "Track Bus",
-                    style: TextStyle(color: Colors.black, fontSize: 16),
+          Consumer<AuthService>(
+            builder: (context,authService,child){
+            return Container(
+              child: InkWell(
+                onTap: () => authService.googleSignIn(),
+                child: Container(
+                  margin: EdgeInsets.all(32),
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      color: Color(0xFFBF1C40F),
+                      borderRadius: BorderRadius.circular(54)),
+                  child: Center(
+                    child: Text(
+                      "Track Bus",
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
                   ),
                 ),
               ),
-            ),
+            );}
           ),
         ],
       ),
-    );
-  }
-}
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(child: Text('logged in!')),
     );
   }
 }
