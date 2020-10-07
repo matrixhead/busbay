@@ -192,6 +192,7 @@ class _LoginPageState extends State<LoginPage> {
               });
             },
             child: AnimatedContainer(
+              padding: EdgeInsets.all(32),
               width: _loginWidth,
               curve: Curves.fastLinearToSlowEaseIn,
               duration: Duration(milliseconds: 1000),
@@ -202,6 +203,19 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30))),
+              child: Column(
+                children: [
+                  PrimaryButton(
+                    btnText: "Login",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  OutlineBtn(
+                    btnText: "Create Account",
+                  )
+                ],
+              ),
             )),
         GestureDetector(
             onTap: () {
@@ -210,6 +224,7 @@ class _LoginPageState extends State<LoginPage> {
               });
             },
             child: AnimatedContainer(
+              padding: EdgeInsets.all(32),
               curve: Curves.fastLinearToSlowEaseIn,
               duration: Duration(milliseconds: 1000),
               transform: Matrix4.translationValues(0, _registerYOFFset, 0),
@@ -218,8 +233,70 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30))),
+              child: Column(
+                children: [
+                  PrimaryButton(
+                    btnText: "Create Account",
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  OutlineBtn(
+                    btnText: "Back to login",
+                  )
+                ],
+              ),
             )),
       ],
+    );
+  }
+}
+
+class PrimaryButton extends StatefulWidget {
+  final String btnText;
+  PrimaryButton({this.btnText});
+  @override
+  _PrimaryButtonState createState() => _PrimaryButtonState();
+}
+
+class _PrimaryButtonState extends State<PrimaryButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Color(0xFF6200EA), borderRadius: BorderRadius.circular(30)),
+      padding: EdgeInsets.all(20),
+      child: Center(
+          child: Text(
+        widget.btnText,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      )),
+    );
+  }
+}
+
+class OutlineBtn extends StatefulWidget {
+  final String btnText;
+  OutlineBtn({this.btnText});
+
+  @override
+  _OutlineBtnState createState() => _OutlineBtnState();
+}
+
+class _OutlineBtnState extends State<OutlineBtn> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(color: Color(0xFFB40284A), width: 2),
+          borderRadius: BorderRadius.circular(50)),
+      padding: EdgeInsets.all(20),
+      child: Center(
+        child: Text(
+          widget.btnText,
+          style: TextStyle(color: Color(0xFFB40284A), fontSize: 16),
+        ),
+      ),
     );
   }
 }
