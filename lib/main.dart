@@ -373,7 +373,7 @@ class _InputWithIconState extends State<InputWithIcon> {
           Expanded(
             child: TextField(
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 20),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10),
                   border: InputBorder.none,
                   hintText: widget.hint),
             ),
@@ -397,12 +397,12 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Color(0xFFB40284A), borderRadius: BorderRadius.circular(50)),
+          color: Color(0xFFCE5F5F), borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(20),
       child: Center(
         child: Text(
           widget.btnText,
-          style: TextStyle(color: Colors.white, fontSize: 10),
+          style: TextStyle(color: Colors.black, fontSize: 15),
         ),
       ),
     );
@@ -422,7 +422,7 @@ class _OutlineBtnState extends State<OutlineBtn> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFB40284A), width: 2),
+          border: Border.all(color: Color(0xFFFFFFFF), width: 2),
           borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(15),
       child: Center(
