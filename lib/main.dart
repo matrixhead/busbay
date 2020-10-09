@@ -1,8 +1,8 @@
+import 'package:busbay/logic/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
               Column(
                 children: <Widget>[
                   InkWell(
-                    onTap: () =>print("pressed"),
+                    onTap: () =>authService.emailSignUp(_emailCntrlr.text, _passwordCntrlr.text),
                     child: PrimaryButton(
                       btnText: "Login",
                     ),
