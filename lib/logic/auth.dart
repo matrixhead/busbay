@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class AuthService {
   Observable<User> user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  PublishSubject<String> status = PublishSubject();
 
   AuthService() {
     user = Observable(_auth.authStateChanges());
@@ -22,6 +23,34 @@ class AuthService {
     );
     await _auth.signInWithCredential(credential);
     print("signed in");
+  }
+  Future<User> emailSignUp(String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        status.add("weak password");
+      } else if (e.code == 'email-already-in-use') {
+        status.add("account already exists");
+      }
+    } catch (e) {
+      status.add(e.code);
+    }
+  }
+  Future<User> emailSignIn(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: email,
+          password:password
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        status.add(e.code);
+      } else if (e.code == 'wrong-password') {
+        status.add(e.code);
+      }
+    }
   }
 }
 //final AuthService authService = AuthService();

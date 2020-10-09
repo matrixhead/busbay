@@ -91,6 +91,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
+    final _emailCntrlr =TextEditingController();
+    final _passwordCntrlr =TextEditingController();
 
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
@@ -249,6 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.email,
                     hint: "Enter Email...",
+                    controller:_emailCntrlr
                   ),
                   SizedBox(
                     height: 20,
@@ -256,13 +259,17 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.vpn_key,
                     hint: "Enter Password...",
+                    controller: _passwordCntrlr,
                   )
                 ],
               ),
               Column(
                 children: <Widget>[
-                  PrimaryButton(
-                    btnText: "Login",
+                  InkWell(
+                    onTap: () =>print("pressed"),
+                    child: PrimaryButton(
+                      btnText: "Login",
+                    ),
                   ),
                   SizedBox(
                     height: 20,
@@ -348,7 +355,8 @@ class _LoginPageState extends State<LoginPage> {
 class InputWithIcon extends StatefulWidget {
   final IconData icon;
   final String hint;
-  InputWithIcon({this.icon, this.hint});
+  final TextEditingController controller;
+  InputWithIcon({this.icon, this.hint, this.controller});
 
   @override
   _InputWithIconState createState() => _InputWithIconState();
@@ -376,6 +384,7 @@ class _InputWithIconState extends State<InputWithIcon> {
                   contentPadding: EdgeInsets.symmetric(vertical: 20),
                   border: InputBorder.none,
                   hintText: widget.hint),
+              controller: widget.controller,
             ),
           )
         ],
