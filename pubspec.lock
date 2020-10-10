@@ -233,6 +233,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2"
+<<<<<<< HEAD
   location:
     dependency: "direct main"
     description:
@@ -254,6 +255,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+=======
+  keyboard_visibility:
+    dependency: "direct main"
+    description:
+      name: keyboard_visibility
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.6"
+>>>>>>> upstream/master
   matcher:
     dependency: transitive
     description:
@@ -343,6 +353,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.1"
+<<<<<<< HEAD
   stream_transform:
     dependency: transitive
     description:
@@ -350,6 +361,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+=======
+>>>>>>> upstream/master
   string_scanner:
     dependency: transitive
     description:
@@ -387,4 +400,8 @@ packages:
     version: "2.1.0-nullsafety.3"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
+<<<<<<< HEAD
   flutter: ">=1.22.0 <2.0.0"
+=======
+  flutter: ">=1.16.0 <2.0.0"
+>>>>>>> upstream/master
