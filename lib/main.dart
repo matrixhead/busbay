@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                         _pageState = 1;
                       }
                     });//navigation link to drivers bus list here
-                    Navigator.push(context, MaterialPageRoute(builder:(context) => DLogin()));
+                    Navigator.push(context, MaterialPageRoute(builder:(context) => PLogin()));
                   },
                   child: Container(
                     margin: EdgeInsets.all(32),
