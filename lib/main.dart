@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
+
 }
 
 class App extends StatelessWidget {
@@ -72,6 +75,10 @@ class _LoginPageState extends State<LoginPage> {
   double windowHeight = 0;
 
   bool _keyboardVisible = false;
+  final emailCntrlr =TextEditingController();
+  final passwordCntrlr =TextEditingController();
+  final emailSUCntrlr =TextEditingController();
+  final passwordSUCntrlr =TextEditingController();
 
   @override
   void initState() {
@@ -91,8 +98,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
-    final _emailCntrlr =TextEditingController();
-    final _passwordCntrlr =TextEditingController();
 
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
@@ -251,7 +256,8 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.email,
                     hint: "Enter Email...",
-                    controller:_emailCntrlr
+                    controller: emailCntrlr,
+
                   ),
                   SizedBox(
                     height: 20,
@@ -259,20 +265,33 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.vpn_key,
                     hint: "Enter Password...",
-                    controller: _passwordCntrlr,
+                    controller: passwordCntrlr,
                   )
                 ],
               ),
               Column(
                 children: <Widget>[
                   InkWell(
-                    onTap: () =>authService.emailSignUp(_emailCntrlr.text, _passwordCntrlr.text),
+                    onTap: () =>authService.emailSignUp(emailCntrlr.text, passwordCntrlr.text),
                     child: PrimaryButton(
                       btnText: "Login",
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _pageState = 2;
+                      });
+                    },
+                    child: PrimaryButton(
+                      btnText: "Register",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -314,6 +333,7 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.email,
                     hint: "Enter Email...",
+                    controller: emailSUCntrlr,
                   ),
                   SizedBox(
                     height: 20,
@@ -321,13 +341,17 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.vpn_key,
                     hint: "Enter Password...",
+                    controller: passwordSUCntrlr,
                   )
                 ],
               ),
               Column(
                 children: <Widget>[
-                  PrimaryButton(
-                    btnText: "Create Account",
+                  InkWell(
+                    onTap:() => authService.emailSignUp(emailSUCntrlr.text, passwordSUCntrlr.text),
+                    child: PrimaryButton(
+                      btnText: "Create Account",
+                    ),
                   ),
                   SizedBox(
                     height: 20,
@@ -356,13 +380,15 @@ class InputWithIcon extends StatefulWidget {
   final IconData icon;
   final String hint;
   final TextEditingController controller;
-  InputWithIcon({this.icon, this.hint, this.controller});
+  InputWithIcon({this.icon, this.hint, this.controller,});
 
   @override
   _InputWithIconState createState() => _InputWithIconState();
 }
 
 class _InputWithIconState extends State<InputWithIcon> {
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -433,7 +459,7 @@ class _OutlineBtnState extends State<OutlineBtn> {
       decoration: BoxDecoration(
           border: Border.all(color: Color(0xFFFFFFFF), width: 2),
           borderRadius: BorderRadius.circular(50)),
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(10),
       child: Center(
         child: Text(
           widget.btnText,
