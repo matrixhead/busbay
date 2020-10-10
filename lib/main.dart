@@ -3,38 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-void main() async{
+import 'package:provider/provider.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
-
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize FlutterFire:
-      future: _initialization,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("error");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MyApp();
-        }
-
-        return Text("i guess we need a splash screen here");
-      },
-    );
+    return ChangeNotifierProvider(
+        create: (context) => AuthService(), child: MyApp());
   }
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -75,14 +60,21 @@ class _LoginPageState extends State<LoginPage> {
   double windowHeight = 0;
 
   bool _keyboardVisible = false;
-  final emailCntrlr =TextEditingController();
-  final passwordCntrlr =TextEditingController();
-  final emailSUCntrlr =TextEditingController();
-  final passwordSUCntrlr =TextEditingController();
+  final emailCntrlr = TextEditingController();
+  final passwordCntrlr = TextEditingController();
+  final emailSUCntrlr = TextEditingController();
+  final passwordSUCntrlr = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    Provider.of<AuthService>(context, listen: false).status.listen((event) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(event),
+        ),
+      );
+    });
 
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
@@ -98,7 +90,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
-
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
 
@@ -257,7 +248,6 @@ class _LoginPageState extends State<LoginPage> {
                     icon: Icons.email,
                     hint: "Enter Email...",
                     controller: emailCntrlr,
-
                   ),
                   SizedBox(
                     height: 20,
@@ -266,16 +256,22 @@ class _LoginPageState extends State<LoginPage> {
                     icon: Icons.vpn_key,
                     hint: "Enter Password...",
                     controller: passwordCntrlr,
+                    obscureText: true
                   )
                 ],
               ),
               Column(
                 children: <Widget>[
-                  InkWell(
-                    onTap: () =>authService.emailSignUp(emailCntrlr.text, passwordCntrlr.text),
-                    child: PrimaryButton(
-                      btnText: "Login",
-                    ),
+                  Consumer<AuthService>(
+                    builder: (context,authService,child){
+                    return InkWell(
+                      onTap: () => authService.emailSignIn(
+                          emailCntrlr.text, passwordCntrlr.text),
+                      child: PrimaryButton(
+                        btnText: "Login",
+                      )
+                    );
+                    }
                   ),
                   SizedBox(
                     height: 10,
@@ -342,16 +338,23 @@ class _LoginPageState extends State<LoginPage> {
                     icon: Icons.vpn_key,
                     hint: "Enter Password...",
                     controller: passwordSUCntrlr,
+                    obscureText: true,
                   )
                 ],
               ),
               Column(
                 children: <Widget>[
-                  InkWell(
-                    onTap:() => authService.emailSignUp(emailSUCntrlr.text, passwordSUCntrlr.text),
-                    child: PrimaryButton(
-                      btnText: "Create Account",
-                    ),
+                  Consumer<AuthService>(
+                    builder: (context,authService,child) {
+                      return InkWell(
+                        onTap: () =>
+                            authService.emailSignUp(
+                                emailSUCntrlr.text, passwordSUCntrlr.text),
+                        child: PrimaryButton(
+                          btnText: "Create Account",
+                        ),
+                      );
+                    }
                   ),
                   SizedBox(
                     height: 20,
@@ -370,7 +373,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
           ),
-        )
+        ),
+
       ],
     );
   }
@@ -380,15 +384,19 @@ class InputWithIcon extends StatefulWidget {
   final IconData icon;
   final String hint;
   final TextEditingController controller;
-  InputWithIcon({this.icon, this.hint, this.controller,});
+  final bool obscureText;
+  InputWithIcon({
+    this.icon,
+    this.hint,
+    this.controller,
+    this.obscureText=false,
+  });
 
   @override
   _InputWithIconState createState() => _InputWithIconState();
 }
 
 class _InputWithIconState extends State<InputWithIcon> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -411,6 +419,7 @@ class _InputWithIconState extends State<InputWithIcon> {
                   border: InputBorder.none,
                   hintText: widget.hint),
               controller: widget.controller,
+              obscureText: widget.obscureText,
             ),
           )
         ],

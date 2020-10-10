@@ -1,10 +1,11 @@
 // ignore: unused_import
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AuthService {
+class AuthService extends ChangeNotifier{
   Observable<User> user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   PublishSubject<String> status = PublishSubject();
