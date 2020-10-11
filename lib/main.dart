@@ -1,39 +1,25 @@
+import 'package:busbay/logic/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:busbay/DriverBusList.dart';
-import 'package:busbay/PassengerBusList.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize FlutterFire:
-      future: _initialization,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("error");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return MyApp();
-        }
-
-        return Text("i guess we need a splash screen here");
-      },
-    );
+    return ChangeNotifierProvider(
+        create: (context) => AuthService(), child: MyApp());
   }
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -74,10 +60,26 @@ class _LoginPageState extends State<LoginPage> {
   double windowHeight = 0;
 
   bool _keyboardVisible = false;
+  final emailCntrlr = TextEditingController();
+  final passwordCntrlr = TextEditingController();
+  final emailSUCntrlr = TextEditingController();
+  final passwordSUCntrlr = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    Provider.of<AuthService>(context, listen: false).status.listen((event) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(event),
+        ),
+      );
+      if (event == 'user-not-found' || event == 'wrong-password') {
+        setState(() {
+          _pageState = 1;
+        });
+      }
+    });
 
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
@@ -93,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
-
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
 
@@ -196,33 +197,49 @@ class _LoginPageState extends State<LoginPage> {
                     child: Image.asset("assets/icons/b.png"),
                   ),
                 ),
-                Container(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_pageState != 0) {
-                          _pageState = 0;
-                        } else {
-                          _pageState = 1;
-                        }
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(32),
-                      padding: EdgeInsets.all(20),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFFF1744),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Center(
-                        child: Text(
-                          "track Bus",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                StreamBuilder(
+                    stream: Provider.of<AuthService>(context, listen: false)
+                        .loading,
+                    builder: (context, snapshot) {
+                      if (snapshot.data == true) {
+                        return Container(
+                            margin: EdgeInsets.all(32),
+                            padding: EdgeInsets.all(20),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1.0,
+                              backgroundColor: _backgroundColor,
+                            ));
+                      } else {
+                        return Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (_pageState != 0) {
+                                  _pageState = 0;
+                                } else {
+                                  _pageState = 1;
+                                }
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(32),
+                              padding: EdgeInsets.all(20),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFFFF1744),
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Center(
+                                child: Text(
+                                  "track Bus",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    })
               ],
             )),
         AnimatedContainer(
@@ -251,23 +268,49 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.email,
                     hint: "Enter Email...",
+                    controller: emailCntrlr,
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   InputWithIcon(
-                    icon: Icons.vpn_key,
-                    hint: "Enter Password...",
-                  )
+                      icon: Icons.vpn_key,
+                      hint: "Enter Password...",
+                      controller: passwordCntrlr,
+                      obscureText: true)
                 ],
               ),
               Column(
                 children: <Widget>[
-                  PrimaryButton(
-                    btnText: "Login",
+                  Consumer<AuthService>(builder: (context, authService, child) {
+                    return InkWell(
+                        onTap: () {
+                          authService.emailSignIn(
+                              emailCntrlr.text, passwordCntrlr.text);
+                          passwordCntrlr.clear();
+                          setState(() {
+                            _pageState = 0;
+                          });
+                        },
+                        child: PrimaryButton(
+                          btnText: "Login",
+                        ));
+                  }),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        _pageState = 2;
+                      });
+                    },
+                    child: PrimaryButton(
+                      btnText: "Register",
+                    ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -309,6 +352,7 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.email,
                     hint: "Enter Email...",
+                    controller: emailSUCntrlr,
                   ),
                   SizedBox(
                     height: 20,
@@ -316,14 +360,22 @@ class _LoginPageState extends State<LoginPage> {
                   InputWithIcon(
                     icon: Icons.vpn_key,
                     hint: "Enter Password...",
+                    controller: passwordSUCntrlr,
+                    obscureText: true,
                   )
                 ],
               ),
               Column(
                 children: <Widget>[
-                  PrimaryButton(
-                    btnText: "Create Aaaaccount",
-                  ),
+                  Consumer<AuthService>(builder: (context, authService, child) {
+                    return InkWell(
+                      onTap: () => authService.emailSignUp(
+                          emailSUCntrlr.text, passwordSUCntrlr.text),
+                      child: PrimaryButton(
+                        btnText: "Create Account",
+                      ),
+                    );
+                  }),
                   SizedBox(
                     height: 20,
                   ),
@@ -341,7 +393,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
@@ -350,7 +402,14 @@ class _LoginPageState extends State<LoginPage> {
 class InputWithIcon extends StatefulWidget {
   final IconData icon;
   final String hint;
-  InputWithIcon({this.icon, this.hint});
+  final TextEditingController controller;
+  final bool obscureText;
+  InputWithIcon({
+    this.icon,
+    this.hint,
+    this.controller,
+    this.obscureText = false,
+  });
 
   @override
   _InputWithIconState createState() => _InputWithIconState();
@@ -378,6 +437,8 @@ class _InputWithIconState extends State<InputWithIcon> {
                   contentPadding: EdgeInsets.symmetric(vertical: 10),
                   border: InputBorder.none,
                   hintText: widget.hint),
+              controller: widget.controller,
+              obscureText: widget.obscureText,
             ),
           )
         ],
@@ -426,7 +487,7 @@ class _OutlineBtnState extends State<OutlineBtn> {
       decoration: BoxDecoration(
           border: Border.all(color: Color(0xFFFFFFFF), width: 2),
           borderRadius: BorderRadius.circular(50)),
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(10),
       child: Center(
         child: Text(
           widget.btnText,
