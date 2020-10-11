@@ -9,9 +9,18 @@ class AuthService extends ChangeNotifier{
   Observable<User> user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   PublishSubject<String> status = PublishSubject();
+  BehaviorSubject<bool> loading = BehaviorSubject();
 
   AuthService() {
+    loading.add(false);
     user = Observable(_auth.authStateChanges());
+    // user.listen((event) {
+    //   if (event == null){
+    //     loading.add(false);
+    //   }
+    //
+    // });
+
   }
 
   void googleSignIn() async {
@@ -40,6 +49,7 @@ class AuthService extends ChangeNotifier{
     }
   }
   Future<User> emailSignIn(String email, String password) async {
+    loading.add(true);
     try {
       await _auth.signInWithEmailAndPassword(
           email: email,
@@ -48,10 +58,12 @@ class AuthService extends ChangeNotifier{
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         status.add(e.code);
+        loading.add(false);
       } else if (e.code == 'wrong-password') {
         status.add(e.code);
+        loading.add(false);
       }
     }
   }
 }
-final AuthService authService = AuthService();
+//final AuthService authService = AuthService();

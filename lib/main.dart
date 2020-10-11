@@ -74,6 +74,11 @@ class _LoginPageState extends State<LoginPage> {
           content: Text(event),
         ),
       );
+      if (event == 'user-not-found' || event == 'wrong-password') {
+        setState(() {
+          _pageState = 1;
+        });
+      }
     });
 
     KeyboardVisibilityNotification().addNewListener(
@@ -192,33 +197,49 @@ class _LoginPageState extends State<LoginPage> {
                     child: Image.asset("assets/icons/b.png"),
                   ),
                 ),
-                Container(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_pageState != 0) {
-                          _pageState = 0;
-                        } else {
-                          _pageState = 1;
-                        }
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(32),
-                      padding: EdgeInsets.all(20),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFFF1744),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Center(
-                        child: Text(
-                          "track Bus",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                StreamBuilder(
+                    stream: Provider.of<AuthService>(context, listen: false)
+                        .loading,
+                    builder: (context, snapshot) {
+                      if (snapshot.data == true) {
+                        return Container(
+                            margin: EdgeInsets.all(32),
+                            padding: EdgeInsets.all(20),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 1.0,
+                              backgroundColor: _backgroundColor,
+                            ));
+                      } else {
+                        return Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (_pageState != 0) {
+                                  _pageState = 0;
+                                } else {
+                                  _pageState = 1;
+                                }
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(32),
+                              padding: EdgeInsets.all(20),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFFFF1744),
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: Center(
+                                child: Text(
+                                  "track Bus",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    })
               ],
             )),
         AnimatedContainer(
@@ -253,26 +274,28 @@ class _LoginPageState extends State<LoginPage> {
                     height: 20,
                   ),
                   InputWithIcon(
-                    icon: Icons.vpn_key,
-                    hint: "Enter Password...",
-                    controller: passwordCntrlr,
-                    obscureText: true
-                  )
+                      icon: Icons.vpn_key,
+                      hint: "Enter Password...",
+                      controller: passwordCntrlr,
+                      obscureText: true)
                 ],
               ),
               Column(
                 children: <Widget>[
-                  Consumer<AuthService>(
-                    builder: (context,authService,child){
+                  Consumer<AuthService>(builder: (context, authService, child) {
                     return InkWell(
-                      onTap: () => authService.emailSignIn(
-                          emailCntrlr.text, passwordCntrlr.text),
-                      child: PrimaryButton(
-                        btnText: "Login",
-                      )
-                    );
-                    }
-                  ),
+                        onTap: () {
+                          authService.emailSignIn(
+                              emailCntrlr.text, passwordCntrlr.text);
+                          passwordCntrlr.clear();
+                          setState(() {
+                            _pageState = 0;
+                          });
+                        },
+                        child: PrimaryButton(
+                          btnText: "Login",
+                        ));
+                  }),
                   SizedBox(
                     height: 10,
                   ),
@@ -344,18 +367,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Column(
                 children: <Widget>[
-                  Consumer<AuthService>(
-                    builder: (context,authService,child) {
-                      return InkWell(
-                        onTap: () =>
-                            authService.emailSignUp(
-                                emailSUCntrlr.text, passwordSUCntrlr.text),
-                        child: PrimaryButton(
-                          btnText: "Create Account",
-                        ),
-                      );
-                    }
-                  ),
+                  Consumer<AuthService>(builder: (context, authService, child) {
+                    return InkWell(
+                      onTap: () => authService.emailSignUp(
+                          emailSUCntrlr.text, passwordSUCntrlr.text),
+                      child: PrimaryButton(
+                        btnText: "Create Account",
+                      ),
+                    );
+                  }),
                   SizedBox(
                     height: 20,
                   ),
@@ -374,7 +394,6 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-
       ],
     );
   }
@@ -389,7 +408,7 @@ class InputWithIcon extends StatefulWidget {
     this.icon,
     this.hint,
     this.controller,
-    this.obscureText=false,
+    this.obscureText = false,
   });
 
   @override
