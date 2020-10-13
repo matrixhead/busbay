@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:busbay/PassengerBusList.dart';
+//mport 'package:busbay/PassengerBusList.dart';
 
 class PBus1 extends StatefulWidget {
   @override
@@ -95,13 +95,16 @@ class _PBusNo1State extends State<PBus1> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        drawer: NavDrawer(),
+        
         appBar: AppBar(
-          title: Text('Maps Sample App'),
+          title: Text('Bus No.1'),
           backgroundColor: Colors.blue[700],
         ),
         body: GoogleMap(
           mapType: MapType.hybrid,
+          scrollGesturesEnabled: true,
+          myLocationButtonEnabled: true,
+          zoomGesturesEnabled: true,
           onMapCreated: _onMapCreated,
           initialCameraPosition: initialLocation,
           markers: Set.of((marker != null) ? [marker] : []),

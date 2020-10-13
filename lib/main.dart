@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:busbay/DriverBusList.dart';
-import 'package:busbay/PassengerBusList.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 
+
+import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:busbay/Passenger_nav.dart';
 void main() {
   runApp(MyApp());
 }
@@ -271,9 +271,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder:(context) => Nav() ));
                       setState(() {
                         _pageState = 0;
                       });
+                      
                     },
                     child: OutlineBtn(
                       btnText: "Cancel",

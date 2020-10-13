@@ -3,11 +3,11 @@ import 'package:busbay/PBusNo1.dart';
 
 void main() { 
 runApp(MaterialApp( 
-	home: PLogin(), 
+	home: PBusList(), 
 )); 
 } 
 
-class PLogin extends StatelessWidget { 
+class PBusList extends StatelessWidget { 
 @override 
 Widget build(BuildContext context) { 
 
@@ -73,11 +73,8 @@ Widget build(BuildContext context) {
 
 
 	return Scaffold( 
-    drawer: NavDrawer(),
-	  appBar: AppBar( 
-		  title: Text('Passenger\'s login'), 
-		  backgroundColor: Colors.lightBlue, 
-	  ), 
+    
+	   
 	  body:
     Column(
         

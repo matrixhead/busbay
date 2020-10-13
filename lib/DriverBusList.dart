@@ -4,11 +4,11 @@ import 'package:busbay/DBusNo1.dart';
 
 void main() { 
 runApp(MaterialApp( 
-	home: DLogin(), 
+	home: DBusList(), 
 )); 
 } 
 
-class DLogin extends StatelessWidget { 
+class DBusList extends StatelessWidget { 
 @override 
 Widget build(BuildContext context) { 
 
@@ -74,11 +74,8 @@ Widget build(BuildContext context) {
 
 
 	return Scaffold( 
-    drawer: NavDrawer(),
-	  appBar: AppBar( 
-		  title: Text('Driver\'s login'), 
-		  backgroundColor: Colors.lightBlue, 
-	  ), 
+    
+	  
 	  body:
     Column(
         
@@ -93,36 +90,3 @@ Widget build(BuildContext context) {
 } 
 
 
-class NavDrawer extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          new UserAccountsDrawerHeader(
-            accountName: Text('Bus Bay'), 
-            accountEmail: Text('mail id'),
-            currentAccountPicture: new CircleAvatar(
-              backgroundImage: AssetImage('assets/images/example_pic.png') 
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-        ],
-      ),
-    );
-  }
-}
