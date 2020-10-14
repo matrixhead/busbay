@@ -1,4 +1,6 @@
 // ignore: unused_import
+import 'dart:async';
+
 import 'package:busbay/logic/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,8 +15,9 @@ class AuthService extends ChangeNotifier {
   BehaviorSubject<bool> loading = BehaviorSubject();
 
   AuthService() {
-    loading.add(false);
+    loading.add(true);
     user = Observable(_auth.authStateChanges());
+    Timer(Duration(seconds: 5),()=>loading.add(false));
   }
 
   void googleSignIn() async {
