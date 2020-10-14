@@ -1,3 +1,5 @@
+import 'package:busbay/DriverBusList.dart';
+import 'package:busbay/PassengerBusList.dart';
 import 'package:busbay/logic/auth.dart';
 import 'package:busbay/ui/home.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
     });
     Provider.of<AuthService>(context, listen: false).user.listen((event) {
       if (event != null) {
-        //nav(isDriver(event.uid));
+        nav(isDriver(event.uid));
       }
     });
 
@@ -410,10 +412,10 @@ class _LoginPageState extends State<LoginPage> {
     driver.then((value) {
       if (value == true) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => HomeD()));
+            MaterialPageRoute(builder: (BuildContext context) => DLogin()));
       } else {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => HomeP()));
+            MaterialPageRoute(builder: (BuildContext context) => PLogin()));
       }
     });
   }
