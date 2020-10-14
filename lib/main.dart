@@ -1,9 +1,14 @@
+import 'package:busbay/DriverBusList.dart';
+import 'package:busbay/PassengerBusList.dart';
 import 'package:busbay/logic/auth.dart';
+import 'package:busbay/ui/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
+
+import 'logic/data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,6 +83,11 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _pageState = 1;
         });
+      }
+    });
+    Provider.of<AuthService>(context, listen: false).user.listen((event) {
+      if (event != null) {
+        nav(isDriver(event.uid));
       }
     });
 
@@ -396,6 +406,18 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
+  }
+
+  void nav(Future<bool> driver) {
+    driver.then((value) {
+      if (value == true) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => DLogin()));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => PLogin()));
+      }
+    });
   }
 }
 

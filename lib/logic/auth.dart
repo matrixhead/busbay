@@ -1,26 +1,23 @@
 // ignore: unused_import
+import 'dart:async';
+
+import 'package:busbay/logic/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AuthService extends ChangeNotifier{
+class AuthService extends ChangeNotifier {
   Observable<User> user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   PublishSubject<String> status = PublishSubject();
   BehaviorSubject<bool> loading = BehaviorSubject();
 
   AuthService() {
-    loading.add(false);
+    loading.add(true);
     user = Observable(_auth.authStateChanges());
-    // user.listen((event) {
-    //   if (event == null){
-    //     loading.add(false);
-    //   }
-    //
-    // });
-
+    Timer(Duration(seconds: 5),()=>loading.add(false));
   }
 
   void googleSignIn() async {
@@ -34,10 +31,12 @@ class AuthService extends ChangeNotifier{
     await _auth.signInWithCredential(credential);
     print("signed in");
   }
+
   Future<User> emailSignUp(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      createUserData(userCredential.user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         status.add("weak password");
@@ -48,13 +47,11 @@ class AuthService extends ChangeNotifier{
       status.add(e.code);
     }
   }
+
   Future<User> emailSignIn(String email, String password) async {
     loading.add(true);
     try {
-      await _auth.signInWithEmailAndPassword(
-          email: email,
-          password:password
-      );
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         status.add(e.code);
