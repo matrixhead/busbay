@@ -12,6 +12,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'logic/data.dart';
+import 'Passenger_nav.dart';
+import 'drivers_nav.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -161,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
        _registerHeight = _keyboardVisible ? windowHeight : windowHeight-270 ;
         break;
     }
+
     return Stack(
       children: <Widget>[
         AnimatedContainer(
@@ -332,7 +336,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      
+
                       setState(() {
                      Navigator.push(context, MaterialPageRoute(builder:(context) => RegisterBusBay() ));
                        //_pageState = 2;
@@ -347,9 +351,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
+
                       setState(() {
                         _pageState = 0;
                       });
+
 
                     },
                     child: OutlineBtn(
@@ -436,10 +442,10 @@ class _LoginPageState extends State<LoginPage> {
     driver.then((value) {
       if (value == true) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => DLogin()));
+            MaterialPageRoute(builder: (BuildContext context) => BNav()));
       } else {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => PLogin()));
+            MaterialPageRoute(builder: (BuildContext context) => PNav()));
       }
     });
   }

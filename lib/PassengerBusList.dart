@@ -1,127 +1,100 @@
-import 'package:flutter/material.dart'; 
-import 'package:busbay/PBusNo1.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'PBusNo1.dart';
 
-void main() { 
-runApp(MaterialApp( 
-	home: PLogin(), 
-)); 
-} 
+void main() {
+  runApp(MaterialApp(home: passengerspeeddail(), title: 'Flutter Speed Dial Examples'));
+}
 
-class PLogin extends StatelessWidget { 
-@override 
-Widget build(BuildContext context) { 
+class passengerspeeddail extends StatefulWidget {
+  @override
+  passengerspeeddailState createState() => passengerspeeddailState();
+}
 
-  Widget textSection = Container(
-      
-      padding : const EdgeInsets.all(40),
-      child:Text('Choose the Bus',
-        
-        textAlign: TextAlign.start,
-        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),
-      )
-    );
-  Row _biuldRow(String busNo , String route, Widget func){ 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        RaisedButton(
-          onPressed:(){
-            Navigator.push(context, MaterialPageRoute(builder:(context) => func ));
-          },
-          child:Text(
-          busNo,
-          ),
-          textColor: Colors.white,
-          color: Color(0xFF0D47A1), 
-        ),
-        Card(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(route),
-          )
-        ,)
-      ],
-    ); 
+class passengerspeeddailState extends State<passengerspeeddail> with TickerProviderStateMixin {
+  ScrollController scrollController;
+  bool dialVisible = true;
+  
+  int _selectedIndex = 0;
+  List<Widget> _widgetOptions = <Widget>[
+    PBus1(),
+    PBus1(),
+    PBus1(),
+  ];
+
+  void _showbus(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
 
-
-
-    
-
-  Widget buttonsection=Container(
-    child:Row(
-      mainAxisAlignment:MainAxisAlignment.start,
+  SpeedDial buildSpeedDial() {
+    return SpeedDial(
+      animatedIcon: AnimatedIcons.menu_close,
+      animatedIconTheme: IconThemeData(size: 22.0),
+      // child: Icon(Icons.add),
+      onOpen: () => print('OPENING DIAL'),
+      onClose: () => print('DIAL CLOSED'),
+      visible: dialVisible,
+      curve: Curves.bounceIn,
       children: [
-        Expanded(
-          child: Column( 
-            children:[
-              _biuldRow('1', 'Palakkad -  Trivandrum', PBus1()) ,
-              _biuldRow('2', 'Trissur - Kottayam',PBus1()),
-              _biuldRow('3', 'Pampady - Pala',PBus1()),
-              _biuldRow('4', 'Trivandrum - Kottayam',PBus1()),
-              _biuldRow('5', 'Ernakulma - Trissur',PBus1()),
-              _biuldRow('6', 'Pampady - Palakkad',PBus1()),
-            ]
+        SpeedDialChild(
+          child:Text('1',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,),
           ),
-        
-        )
-      ]      
-    )
-  );
+          backgroundColor: Colors.lightBlueAccent,
+          onTap:(){
+            _showbus(0);
+          },
+          label: 'route 1',
+          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+          labelBackgroundColor: Colors.white,
+        ),
+        SpeedDialChild(
+          child:Text('2',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,),
+          ),
+          backgroundColor: Colors.lightBlueAccent,
+          onTap: (){
+            _showbus(1);
+          },
+          label: 'route 2',
+          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+          labelBackgroundColor: Colors.white,
+        ),
+        SpeedDialChild(
+          child:Text('3',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,),
+          ),
+          backgroundColor: Colors.lightBlueAccent,
+          onTap: () {
+           _showbus(2);
+          },
+          label: 'route 3',
+          labelStyle: TextStyle(fontWeight: FontWeight.w500),
+          labelBackgroundColor: Colors.white,
+         
+        ),
+      ],
+    );
+  }
 
-
-	return Scaffold( 
-    drawer: NavDrawer(),
-	  appBar: AppBar( 
-		  title: Text('Passenger\'s login'), 
-		  backgroundColor: Colors.lightBlue, 
-	  ), 
-	  body:
-    Column(
-        
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          textSection,
-          buttonsection
-        ]
-      ,)
-	); 
-} 
-} 
-
-
-class NavDrawer extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          new UserAccountsDrawerHeader(
-            accountName: Text('Bus Bay'), 
-            accountEmail: Text('mail id'),
-            currentAccountPicture: new CircleAvatar(
-              backgroundImage: AssetImage('assets/images/example_pic.png') 
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-        ],
+    return Scaffold(
+      
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
+ 
+      
+      floatingActionButton: buildSpeedDial(),
     );
   }
 }
