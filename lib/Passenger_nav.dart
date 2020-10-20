@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'PassengerBusList.dart';
 
 
-class Nav extends StatefulWidget {
+class PNav extends StatefulWidget {
   @override
-  _NavState createState() => _NavState();
+  _PNavState createState() => _PNavState();
 }
 
-class _NavState extends State<Nav> {
+class _PNavState extends State<PNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     passengerspeeddail(),

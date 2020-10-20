@@ -8,6 +8,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'logic/data.dart';
+import 'Passenger_nav.dart';
+import 'drivers_nav.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -323,7 +326,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder:(context) => Nav() ));
+                      
                       setState(() {
                         _pageState = 0;
                       });
@@ -413,10 +416,10 @@ class _LoginPageState extends State<LoginPage> {
     driver.then((value) {
       if (value == true) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => DLogin()));
+            MaterialPageRoute(builder: (BuildContext context) => BNav()));
       } else {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => PLogin()));
+            MaterialPageRoute(builder: (BuildContext context) => PNav()));
       }
     });
   }

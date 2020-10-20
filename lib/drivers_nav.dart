@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'DriverBusList.dart';
 
 
-class Nav extends StatefulWidget {
+class BNav extends StatefulWidget {
   @override
-  _NavState createState() => _NavState();
+  _BNavState createState() => _BNavState();
 }
 
-class _NavState extends State<Nav> {
+class _BNavState extends State<BNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     driverspeeddail(),
