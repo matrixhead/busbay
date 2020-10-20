@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               heroTag: "FABend",
               child: Text("END"),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder:(context) => Nav()));
+               Navigator.push(context, MaterialPageRoute(builder:(context) => DBus1() ));
               }
               
             )
