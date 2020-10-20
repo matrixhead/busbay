@@ -23,6 +23,8 @@ environment:
 dependencies:
   google_maps_flutter: ^1.0.2
   location: ^3.0.2
+  email_validator: ^1.0.4
+  fluttertoast: ^7.1.1
   
   flutter:
     sdk: flutter
