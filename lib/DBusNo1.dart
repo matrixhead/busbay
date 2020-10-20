@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:busbay/Passenger_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:busbay/DriverBusList.dart';
+//import 'package:busbay/DriverBusList.dart';
 
 
 class DBus1 extends StatelessWidget {
@@ -89,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
               target: LatLng(newLocalData.latitude, newLocalData.longitude),
               tilt: 0,
               zoom: 18.00)));
+         
           updateMarkerAndCircle(newLocalData, imageData);
         }
       });
@@ -111,17 +113,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(),
+    
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: GoogleMap(
+        scrollGesturesEnabled: true,
+        myLocationButtonEnabled: true,
+        zoomGesturesEnabled: true,
         mapType: MapType.hybrid,
         initialCameraPosition: initialLocation,
         markers: Set.of((marker != null) ? [marker] : []),
         circles: Set.of((circle != null) ? [circle] : []),
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
+         
         },
 
       ),
@@ -142,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               heroTag: "FABend",
               child: Text("END"),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder:(context) => DLogin()));
+               Navigator.push(context, MaterialPageRoute(builder:(context) => DBus1() ));
               }
               
             )
