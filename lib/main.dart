@@ -307,8 +307,10 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           isvalid = EmailValidator.validate(emailCntrlr.text);
                           if (isvalid) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) => App()));
+                            authService.emailSignIn(
+                                emailCntrlr.text, passwordCntrlr.text);
+                            passwordCntrlr.clear();
+                           // Navigator.push(context,MaterialPageRoute(builder: (context) => App()));
                           } else {
                             Fluttertoast.showToast(
                                 msg: "Please Enter a valid Email",
@@ -319,9 +321,7 @@ class _LoginPageState extends State<LoginPage> {
                                 textColor: Colors.white,
                                 fontSize: 16.0);
                           }
-                          authService.emailSignIn(
-                              emailCntrlr.text, passwordCntrlr.text);
-                          passwordCntrlr.clear();
+
                           setState(() {
                             _pageState = 0;
                           });
