@@ -53,12 +53,12 @@ class driverspeeddailState extends State<driverspeeddail>
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-            child: DBus1(bus: _selectedBus),
-            ),
+          child: DBus1(bus: _selectedBus),
+        ),
         floatingActionButton: FutureBuilder(
             future: getAllBus(),
             builder: (context, snapshot) {
-              if (snapshot.hasData){
+              if (snapshot.hasData) {
                 return SpeedDial(
                   animatedIcon: AnimatedIcons.menu_close,
                   animatedIconTheme: IconThemeData(size: 22.0),
@@ -70,8 +70,8 @@ class driverspeeddailState extends State<driverspeeddail>
                   children: snapshot.data
                       .map<SpeedDialChild>((bus) => buildSpeedDialChild(bus))
                       .toList(),
-                );}
-              else{
+                );
+              } else {
                 return CircularProgressIndicator();
               }
             }));

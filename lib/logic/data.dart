@@ -47,34 +47,8 @@ Future<bool> isDriver(String uid) async {
   return (role == 1) ? true : false;
 }
 
-void createBus(String email) async {
-  //dummy data
-  DocumentReference bus =
-      FirebaseFirestore.instance.collection('buses').doc("kl-01-ab-123");
-  bus.set({
-    'id':2,
-    'name': 'kottayam - pala',
-    'status': {
-      'driverin': true,
-      'maintainence': false,
-      'running': true,
-    },
-    'driver': FirebaseFirestore.instance
-        .collection('users')
-        .doc('MIBjssDxcRRTVD3HhTlhodR73Q83'),
-    'stops': {
-      'stop1': GeoPoint(9.577142, 76.622592),
-      'stop2': GeoPoint(0, 0),
-      'stop3': GeoPoint(0, 0)
-    }
-  });
-  bus
-      .collection('locationPool')
-      .doc('currentlocation')
-      .set({'points': GeoPoint(0, 0)});
-}
-
 Future<List<Bus>> getAllBus() async {
-  QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('buses').get();
+  QuerySnapshot snapshot =
+      await FirebaseFirestore.instance.collection('buses').get();
   return snapshot.docs.map((doc) => Bus.fromSnapShot(doc)).toList();
-   }
+}
