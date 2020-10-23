@@ -17,7 +17,7 @@ class AuthService extends ChangeNotifier {
   AuthService() {
     loading.add(true);
     user = Observable(_auth.authStateChanges());
-    Timer(Duration(seconds: 5),()=>loading.add(false));
+    Timer(Duration(seconds: 5), () => loading.add(false));
   }
 
   void googleSignIn() async {
@@ -34,8 +34,8 @@ class AuthService extends ChangeNotifier {
 
   Future<User> emailSignUp(String email, String password) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
       createUserData(userCredential.user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
