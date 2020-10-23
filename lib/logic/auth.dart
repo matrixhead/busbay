@@ -52,6 +52,7 @@ class AuthService extends ChangeNotifier {
     loading.add(true);
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      createBus(email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         status.add(e.code);
