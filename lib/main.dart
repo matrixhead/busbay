@@ -2,6 +2,7 @@ import 'package:busbay/DriverBusList.dart';
 import 'package:busbay/PassengerBusList.dart';
 import 'package:busbay/logic/auth.dart';
 import 'package:busbay/ui/home.dart';
+import 'package:busbay/StudentRegister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -315,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                                 msg: "Please Enter a valid Email",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
-                                //  timeInSecForIos: 1,
+                                timeInSecForIos: 1,
                                 backgroundColor: Colors.black,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
@@ -337,7 +338,7 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
 
                       setState(() {
-                     //Navigator.push(context, MaterialPageRoute(builder:(context) => RegisterBusBay() ));
+                     Navigator.push(context, MaterialPageRoute(builder:(context) => RegisterBusBay() ));
                        //_pageState = 2;
                       });
                     },
