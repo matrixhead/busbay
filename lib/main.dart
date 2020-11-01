@@ -310,9 +310,9 @@ class _LoginPageState extends State<LoginPage> {
                             authService.emailSignIn(
                                 emailCntrlr.text, passwordCntrlr.text);
                             passwordCntrlr.clear();
-                           // Navigator.push(context,MaterialPageRoute(builder: (context) => App()));
+                           //Navigator.push(context,MaterialPageRoute(builder: (context) => App()));
                           } else {
-                            Fluttertoast.showToast(
+                                Fluttertoast.showToast(
                                 msg: "Please Enter a valid Email",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
