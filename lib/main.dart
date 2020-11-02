@@ -2,11 +2,15 @@ import 'package:busbay/DriverBusList.dart';
 import 'package:busbay/PassengerBusList.dart';
 import 'package:busbay/logic/auth.dart';
 import 'package:busbay/ui/home.dart';
+import 'package:busbay/StudentRegister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'logic/data.dart';
 import 'Passenger_nav.dart';
 import 'drivers_nav.dart';
@@ -48,6 +52,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isvalid = false;
+
   int _pageState = 0;
 
   var _backgroundColor = Colors.white;
@@ -155,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
 
         _loginXOffset = 20;
         _registerYOffset = _keyboardVisible ? 55 : 270;
-        _registerHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+       _registerHeight = _keyboardVisible ? windowHeight : windowHeight-270 ;
         break;
     }
 
@@ -281,7 +287,9 @@ class _LoginPageState extends State<LoginPage> {
                     icon: Icons.email,
                     hint: "Enter Email...",
                     controller: emailCntrlr,
+
                   ),
+
                   SizedBox(
                     height: 20,
                   ),
@@ -297,15 +305,30 @@ class _LoginPageState extends State<LoginPage> {
                   Consumer<AuthService>(builder: (context, authService, child) {
                     return InkWell(
                         onTap: () {
-                          authService.emailSignIn(
-                              emailCntrlr.text, passwordCntrlr.text);
-                          passwordCntrlr.clear();
+                          isvalid = EmailValidator.validate(emailCntrlr.text);
+                          if (isvalid) {
+                            authService.emailSignIn(
+                                emailCntrlr.text, passwordCntrlr.text);
+                            passwordCntrlr.clear();
+                           //Navigator.push(context,MaterialPageRoute(builder: (context) => App()));
+                          } else {
+                                Fluttertoast.showToast(
+                                msg: "Please Enter a valid Email",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.black,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+
                           setState(() {
                             _pageState = 0;
                           });
                         },
                         child: PrimaryButton(
                           btnText: "Login",
+
                         ));
                   }),
                   SizedBox(
@@ -313,11 +336,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
+
                       setState(() {
-                        _pageState = 2;
+                     Navigator.push(context, MaterialPageRoute(builder:(context) => RegisterBusBay() ));
+                       //_pageState = 2;
                       });
                     },
-                    child: PrimaryButton(
+                    child: OutlineBtn(
                       btnText: "Register",
                     ),
                   ),
@@ -326,11 +351,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      
+
                       setState(() {
                         _pageState = 0;
                       });
-                      
+
+
                     },
                     child: OutlineBtn(
                       btnText: "Cancel",
@@ -423,6 +449,10 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
   }
+
+
+
+
 }
 
 class InputWithIcon extends StatefulWidget {
@@ -523,3 +553,5 @@ class _OutlineBtnState extends State<OutlineBtn> {
     );
   }
 }
+
+

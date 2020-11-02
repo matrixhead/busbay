@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'DriverBusList.dart';
+import 'Driver/profile.dart';
 
 
 class DNav extends StatefulWidget {
@@ -12,6 +13,7 @@ class _DNavState extends State<DNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     driverspeeddail(),
+    ProfilePassenger(),
     Text('Profile Screen'),
     Text('Setting Screen'),
   ];

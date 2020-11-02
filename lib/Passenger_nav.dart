@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'PassengerBusList.dart';
+import 'Passenger/profile.dart';
 
 
 class PNav extends StatefulWidget {
@@ -12,7 +13,7 @@ class _PNavState extends State<PNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     passengerspeeddail(),
-    Text('Messgaes Screen'),
+    ProfilePassenger(),
     Text('Profile Screen'),
   ];
 
