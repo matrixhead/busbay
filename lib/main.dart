@@ -416,7 +416,7 @@ class _LoginPageState extends State<LoginPage> {
     driver.then((value) {
       if (value == true) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => BNav()));
+            MaterialPageRoute(builder: (BuildContext context) => DNav()));
       } else {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => PNav()));

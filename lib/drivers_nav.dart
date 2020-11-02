@@ -8,12 +8,12 @@ class BNav extends StatefulWidget {
   _BNavState createState() => _BNavState();
 }
 
-class _BNavState extends State<DNav> {
+class _DNavState extends State<DNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     driverspeeddail(),
-    Text('Messgaes Screen'),
     Text('Profile Screen'),
+    Text('Setting Screen'),
   ];
 
   void _onItemTap(int index) {
