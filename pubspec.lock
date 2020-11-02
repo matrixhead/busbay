@@ -71,6 +71,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.3"
+  dropdownfield:
+    dependency: "direct main"
+    description:
+      name: dropdownfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  email_validator:
+    dependency: "direct main"
+    description:
+      name: email_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   fake_async:
     dependency: transitive
     description:
@@ -84,7 +98,7 @@ packages:
       name: firebase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.0"
+    version: "7.3.2"
   firebase_analytics:
     dependency: "direct main"
     description:
@@ -177,13 +191,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: "direct main"
+    description:
+      name: fluttertoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.3"
   google_maps_flutter:
     dependency: "direct main"
     description:
       name: google_maps_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.5"
   google_maps_flutter_platform_interface:
     dependency: transitive
     description:
@@ -323,7 +344,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.3"
+    version: "2.1.4+1"
   rxdart:
     dependency: "direct main"
     description:

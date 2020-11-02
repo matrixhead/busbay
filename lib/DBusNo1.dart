@@ -5,33 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+
+import 'logic/data.dart';
 //import 'package:busbay/DriverBusList.dart';
 
 
-class DBus1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      
-      debugShowCheckedModeBanner: false,
-      title: 'Bus No.1 Tracking page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'BUS NO.1'),
-    );
-  }
-}
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+class DBus1 extends StatefulWidget {
+  final Bus bus;
+  DBus1({Key key, this.bus}) : super(key: key);
+  
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _DBus1State createState() => _DBus1State();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _DBus1State extends State<DBus1> {
   StreamSubscription _locationSubscription;
   Location _locationTracker = Location();
   Marker marker;
@@ -115,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
     
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.bus?.name??"selectBus"),
       ),
       body: GoogleMap(
         scrollGesturesEnabled: true,
