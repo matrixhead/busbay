@@ -49,7 +49,7 @@ class _StudentRegiState extends State<StudentRegi> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: Color(0xFF4527A0),
+            color: Color(0xFF6200EA),
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(

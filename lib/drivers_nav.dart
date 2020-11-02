@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'DriverBusList.dart';
+import 'Driver/profile.dart';
 
 
 class BNav extends StatefulWidget {
@@ -12,7 +13,7 @@ class _BNavState extends State<BNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     driverspeeddail(),
-    Text('Messgaes Screen'),
+    ProfilePassenger(),
     Text('Profile Screen'),
   ];
 
