@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'DriverBusList.dart';
 
 
-class BNav extends StatefulWidget {
+class DNav extends StatefulWidget {
   @override
-  _BNavState createState() => _BNavState();
+  _DNavState createState() => _DNavState();
 }
 
 class _DNavState extends State<DNav> {
