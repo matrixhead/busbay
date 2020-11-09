@@ -17,8 +17,6 @@ class passengerspeeddail extends StatefulWidget {
 
 class passengerspeeddailState extends State<passengerspeeddail>
     with TickerProviderStateMixin {
-  ScrollController scrollController;
-  bool dialVisible = true;
   Map<int, Marker> markerList = {};
   List<Circle> circleList = [];
   Location _locationTracker = Location();
@@ -113,6 +111,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
         markerList[1] = Marker(
             markerId: MarkerId("bus"),
             position: LatLng(point.latitude, point.longitude),
+            rotation: snapshot.data()['heading'],
             draggable: false,
             zIndex: 2,
             flat: true,
@@ -155,9 +154,6 @@ class passengerspeeddailState extends State<passengerspeeddail>
               return SpeedDial(
                 animatedIcon: AnimatedIcons.menu_close,
                 animatedIconTheme: IconThemeData(size: 22.0),
-                // child: Icon(Icons.add),
-                onOpen: () => print('OPENING DIAL'),
-                onClose: () => print('DIAL CLOSED'),
                 curve: Curves.bounceIn,
                 children: snapshot.data
                     .map<SpeedDialChild>((bus) => buildSpeedDialChild(bus))

@@ -61,6 +61,7 @@ void updateBusLocation(Bus bus, LocationData newLocalData) async{
   FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool").doc("currentlocation");
   ref.set({
     'points':GeoPoint(newLocalData.latitude, newLocalData.longitude),
+    'heading':newLocalData.heading
   });
 }
 
