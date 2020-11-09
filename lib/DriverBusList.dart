@@ -74,6 +74,7 @@ class driverspeeddailState extends State<driverspeeddail>
               } else {
                 return CircularProgressIndicator();
               }
-            }));
+            })
+    );
   }
 }

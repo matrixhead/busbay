@@ -9,12 +9,9 @@ import 'package:location/location.dart';
 import 'logic/data.dart';
 //import 'package:busbay/DriverBusList.dart';
 
-
-
 class DBus1 extends StatefulWidget {
   final Bus bus;
   DBus1({Key key, this.bus}) : super(key: key);
-  
 
   @override
   _DBus1State createState() => _DBus1State();
@@ -26,14 +23,14 @@ class _DBus1State extends State<DBus1> {
   Marker marker;
   Circle circle;
   GoogleMapController _controller;
-
   static final CameraPosition initialLocation = CameraPosition(
     target: LatLng(9.577142, 76.622592),
     zoom: 14.4746,
   );
 
   Future<Uint8List> getMarker() async {
-    ByteData byteData = await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
+    ByteData byteData =
+        await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
     return byteData.buffer.asUint8List();
   }
 
@@ -61,7 +58,6 @@ class _DBus1State extends State<DBus1> {
 
   void getCurrentLocation() async {
     try {
-
       Uint8List imageData = await getMarker();
       var location = await _locationTracker.getLocation();
 
@@ -71,19 +67,19 @@ class _DBus1State extends State<DBus1> {
         _locationSubscription.cancel();
       }
 
-
-      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+      _locationSubscription =
+          _locationTracker.onLocationChanged.listen((newLocalData) {
         if (_controller != null) {
-          _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
-              bearing: 192.8334901395799,
-              target: LatLng(newLocalData.latitude, newLocalData.longitude),
-              tilt: 0,
-              zoom: 18.00)));
-         
+          _controller.animateCamera(CameraUpdate.newCameraPosition(
+              new CameraPosition(
+                  bearing: 192.8334901395799,
+                  target: LatLng(newLocalData.latitude, newLocalData.longitude),
+                  tilt: 0,
+                  zoom: 18.00)));
+          updateBusLocation(widget.bus,newLocalData);
           updateMarkerAndCircle(newLocalData, imageData);
         }
       });
-
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         debugPrint("Permission Denied");
@@ -102,9 +98,8 @@ class _DBus1State extends State<DBus1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       appBar: AppBar(
-        title: Text(widget.bus?.name??"selectBus"),
+        title: Text(widget.bus?.name ?? "selectBus"),
       ),
       body: GoogleMap(
         scrollGesturesEnabled: true,
@@ -116,35 +111,31 @@ class _DBus1State extends State<DBus1> {
         circles: Set.of((circle != null) ? [circle] : []),
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
-         
         },
-
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children:<Widget> [
+          children: <Widget>[
             FloatingActionButton(
               child: Text("START"),
               heroTag: "FABstart",
               onPressed: () {
                 getCurrentLocation();
-              }
-            ,),
+              },
+            ),
             FloatingActionButton(
-              heroTag: "FABend",
-              child: Text("END"),
-              onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder:(context) => DBus1() ));
-              }
-              
-            )
+
+                heroTag: "FABend",
+                child: Text("END"),
+                onPressed: () {
+                  _locationSubscription.cancel();
+                })
           ],
-        )
-      ,),
-      
+        ),
+      ),
     );
   }
 }
