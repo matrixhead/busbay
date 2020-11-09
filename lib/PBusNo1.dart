@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'logic/data.dart';
@@ -20,7 +21,7 @@ class _PBusNo1State extends State<PBus1> {
   Location _locationTracker = Location();
   Circle circle;
   Marker marker;
-  List<Marker> markerList = [];
+  Map <int,Marker> markerList={} ;
   List<Circle> circleList = [];
 
   static final CameraPosition initialLocation = CameraPosition(
@@ -29,17 +30,7 @@ class _PBusNo1State extends State<PBus1> {
   );
   @override
   void initState() {
-    getBusLoc(widget.bus).listen((snapshot) {
-      if (snapshot.hasData) {
-        GeoPoint point=snapshot.data['points'];
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            new CameraPosition(
-                bearing: 192.8334901395799,
-                target: LatLng(point.latitude, point.longitude),
-                tilt: 0,
-                zoom: 18.00)));
-      }
-    });
+    // TODO: implement initState
     super.initState();
   }
 
@@ -75,12 +66,12 @@ class _PBusNo1State extends State<PBus1> {
     });
   }
 
-  void _animateCamera(LocationData _locationdata) {
+  void _animateCamera(LatLng _locationdata) {
     if (mapController != null) {
       mapController.animateCamera(CameraUpdate.newCameraPosition(
           new CameraPosition(
               bearing: 192.8334901395799,
-              target: LatLng(_locationdata.latitude, _locationdata.longitude),
+              target: _locationdata,
               tilt: 0,
               zoom: 18.00)));
     }
@@ -107,16 +98,14 @@ class _PBusNo1State extends State<PBus1> {
   void dropPassengerMarker() async {
     try {
       LocationData location = await _locationTracker.getLocation();
-      markerList.insert(
-          0,
-          Marker(
-              markerId: MarkerId("home"),
-              position: LatLng(location.latitude, location.longitude),
-              draggable: false,
-              zIndex: 2,
-              flat: true,
-              anchor: Offset(0.78, 0.78),
-              icon: BitmapDescriptor.defaultMarker));
+      markerList[0]=Marker(
+          markerId: MarkerId("home"),
+          position: LatLng(location.latitude, location.longitude),
+          draggable: false,
+          zIndex: 2,
+          flat: true,
+          anchor: Offset(0.78, 0.78),
+          icon: BitmapDescriptor.defaultMarker);
       circleList.insert(
           0,
           Circle(
@@ -126,12 +115,51 @@ class _PBusNo1State extends State<PBus1> {
               strokeColor: Colors.blue,
               center: LatLng(location.latitude, location.longitude),
               fillColor: Colors.blue.withAlpha(70)));
-      _animateCamera(location);
+      _animateCamera(LatLng(location.latitude, location.longitude));
+
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         debugPrint("Permission Denied");
       }
     }
+  }
+
+  Future<void> trackBus() async {
+    if (widget.bus != null) {
+      Uint8List imageData = await getMarker();
+      getBusLoc(widget.bus).listen((snapshot) {
+        GeoPoint point = snapshot.data()['points'];
+        markerList[1]=Marker(
+            markerId: MarkerId("bus"),
+            position: LatLng(point.latitude, point.longitude),
+            draggable: false,
+            zIndex: 2,
+            flat: true,
+            anchor: Offset(0.78, 0.78),
+            icon: BitmapDescriptor.fromBytes(imageData));
+        _animateCamera(LatLng(point.latitude, point.longitude));
+      });
+    }
+  }
+
+  SpeedDialChild buildSpeedDialChild(Bus bus) {
+    return SpeedDialChild(
+      child: Text(
+        bus.id.toString(),
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
+        ),
+      ),
+      backgroundColor: Colors.lightBlueAccent,
+      onTap: () {
+       // _showbus(bus);
+      },
+      label: 'route ' + bus.id.toString(),
+      labelStyle: TextStyle(fontWeight: FontWeight.w500),
+      labelBackgroundColor: Colors.white,
+    );
   }
 
   @override
@@ -149,20 +177,60 @@ class _PBusNo1State extends State<PBus1> {
           zoomGesturesEnabled: true,
           onMapCreated: _onMapCreated,
           initialCameraPosition: initialLocation,
-          markers: Set.of(markerList ?? []),
+          markers: Set.of(markerList.values.toList() ?? []),
           circles: Set.of(circleList ?? []),
         ),
         floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniStartFloat,
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add_location),
-            onPressed: () {
-              //getCurrentLocation();
-              setState(() {
-                dropPassengerMarker();
-              });
-            }),
+            FloatingActionButtonLocation.startFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [FutureBuilder(
+                future: getAllBus(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SpeedDial(
+                      animatedIcon: AnimatedIcons.menu_close,
+                      animatedIconTheme: IconThemeData(size: 22.0),
+                      // child: Icon(Icons.add),
+                      onOpen: () => print('OPENING DIAL'),
+                      onClose: () => print('DIAL CLOSED'),
+                      curve: Curves.bounceIn,
+                      children: snapshot.data
+                          .map<SpeedDialChild>((bus) => buildSpeedDialChild(bus))
+                          .toList(),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }),
+              FloatingActionButton(
+                  child: Icon(Icons.add_location),
+                  onPressed: () {
+                    //getCurrentLocation();
+                    setState(() {
+                      dropPassengerMarker();
+                    });
+                  }),
+
+            ],
+          ),
+        ),
       ),
     );
   }
+}
+
+class PassengerLiftedState extends ChangeNotifier{
+  List<Bus> busList;
+
+  PassengerLiftedState(){
+   initialiseBusList();
+  }
+  void initialiseBusList()async{
+    busList=await getAllBus();
+    notifyListeners();
+  }
+
 }

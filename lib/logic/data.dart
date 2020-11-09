@@ -65,5 +65,6 @@ void updateBusLocation(Bus bus, LocationData newLocalData) async{
 }
 
 Stream getBusLoc(Bus bus){
- return FirebaseFirestore.instance.collection("buses/"+bus.docID??""+"/locationPool").doc("currentlocation").snapshots();
+ CollectionReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool");
+ return ref.doc("currentlocation").snapshots();
 }
