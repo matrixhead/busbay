@@ -94,10 +94,16 @@ class _PBusNo1State extends State<PBus1> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         
         appBar: AppBar(
-          title: Text('Bus No.1'),
+          title: Text('Bus No.1',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Courgette',
+            ),),
           backgroundColor: Colors.blue[700],
         ),
         body: GoogleMap(

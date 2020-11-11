@@ -39,6 +39,12 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/icons/e.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: LoginPage(),
         ),
       ),
@@ -56,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
 
   int _pageState = 0;
 
-  var _backgroundColor = Colors.white;
+  //var _backgroundColor = Colors.white;
   var _headingColor = Color(0xFFB40284A);
 
   double _headingTop = 100;
@@ -118,8 +124,8 @@ class _LoginPageState extends State<LoginPage> {
 
     switch (_pageState) {
       case 0:
-        _backgroundColor = Colors.deepPurpleAccent;
-        _headingColor = Color(0xFFB40284A);
+        //_backgroundColor = Colors.deepPurpleAccent;
+        _headingColor = Colors.white70;
 
         _headingTop = 100;
 
@@ -133,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
         _registerYOffset = windowHeight;
         break;
       case 1:
-        _backgroundColor = Colors.deepPurple[600];
+        //_backgroundColor = Colors.deepPurple[600];
         _headingColor = Colors.white;
 
         _headingTop = 90;
@@ -148,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
         _registerYOffset = windowHeight;
         break;
       case 2:
-        _backgroundColor = Color(0xFFBD34C59);
-        _headingColor = Colors.white;
+       //_backgroundColor = Color(0xFFBD34C59);
+        _headingColor = Colors.black;
 
         _headingTop = 80;
 
@@ -170,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
         AnimatedContainer(
             curve: Curves.fastLinearToSlowEaseIn,
             duration: Duration(milliseconds: 1000),
-            color: _backgroundColor,
+            //color: _backgroundColor,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -192,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "bus Bay",
                             style: TextStyle(
-                                color: Color(0xFFF44336), fontSize: 32),
+                                color: Color(0xFFF44336), fontSize: 40, fontFamily: 'PermMarker'),
                           ),
                         ),
                         Container(
@@ -209,12 +215,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                Container(
+              /*  Container(
                   padding: EdgeInsets.symmetric(horizontal: 32),
                   child: Center(
                     child: Image.asset("assets/icons/b.png"),
                   ),
-                ),
+                ), */
                 StreamBuilder(
                     stream: Provider.of<AuthService>(context, listen: false)
                         .loading,
@@ -225,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.all(20),
                             child: CircularProgressIndicator(
                               strokeWidth: 1.0,
-                              backgroundColor: _backgroundColor,
+                             // backgroundColor: _backgroundColor,
                             ));
                       } else {
                         return Container(

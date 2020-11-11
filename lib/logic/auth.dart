@@ -20,6 +20,7 @@ class AuthService extends ChangeNotifier {
     Timer(Duration(seconds: 5), () => loading.add(false));
   }
 
+
   void googleSignIn() async {
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth =
@@ -48,6 +49,15 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  Stream<String> get onAuthStateChanged => _auth.authStateChanges().map(
+        (User user) => user?.uid,
+  );
+
+  Future updateUserName(String name, User currentUser) async {
+    await currentUser.updateProfile(displayName: name);
+    await currentUser.reload();
+
+  }
   Future<User> emailSignIn(String email, String password) async {
     loading.add(true);
     try {
@@ -62,5 +72,7 @@ class AuthService extends ChangeNotifier {
       }
     }
   }
+
 }
+
 //final AuthService authService = AuthService();

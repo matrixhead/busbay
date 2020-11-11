@@ -104,7 +104,12 @@ class _DBus1State extends State<DBus1> {
     return Scaffold(
     
       appBar: AppBar(
-        title: Text(widget.bus?.name??"selectBus"),
+        title: Text(widget.bus?.name??"select Bus",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontFamily: 'Courgette',
+          ),),
       ),
       body: GoogleMap(
         scrollGesturesEnabled: true,
@@ -127,7 +132,12 @@ class _DBus1State extends State<DBus1> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children:<Widget> [
             FloatingActionButton(
-              child: Text("START"),
+              child: Text("START",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: 'DancingScript',
+                ),),
               heroTag: "FABstart",
               onPressed: () {
                 getCurrentLocation();
@@ -135,7 +145,11 @@ class _DBus1State extends State<DBus1> {
             ,),
             FloatingActionButton(
               heroTag: "FABend",
-              child: Text("END"),
+              child: Text("END",style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'DancingScript',
+              ),),
               onPressed: () {
                Navigator.push(context, MaterialPageRoute(builder:(context) => DBus1() ));
               }

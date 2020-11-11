@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'DriverBusList.dart';
 import 'Driver/profile.dart';
-
+import 'Driver/Settings.dart';
 
 class BNav extends StatefulWidget {
   @override
@@ -13,8 +13,8 @@ class _BNavState extends State<BNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     driverspeeddail(),
-    ProfilePassenger(),
-    Text('Profile Screen'),
+    ProfileScreen(),
+    SettingsPassenger(),
   ];
 
   void _onItemTap(int index) {
@@ -36,26 +36,28 @@ class _BNavState extends State<BNav> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.bus_alert,
+              Icons.directions_bus,
               
             ),
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Color.fromRGBO(
+                39, 105, 171, 1),
             label: "BUS",
             
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person
+              Icons.account_circle_rounded
             ),
             label: "profile",
-            backgroundColor: Colors.blueAccent,
+            backgroundColor:  Color(0xFF040021),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
             ),
             label: "settings",
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Color.fromRGBO(
+                39, 105, 171, 1),
           ),
         ],
         currentIndex: _selectedIndex,
