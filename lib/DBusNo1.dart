@@ -9,12 +9,9 @@ import 'package:location/location.dart';
 import 'logic/data.dart';
 //import 'package:busbay/DriverBusList.dart';
 
-
-
 class DBus1 extends StatefulWidget {
   final Bus bus;
   DBus1({Key key, this.bus}) : super(key: key);
-  
 
   @override
   _DBus1State createState() => _DBus1State();
@@ -33,7 +30,8 @@ class _DBus1State extends State<DBus1> {
   );
 
   Future<Uint8List> getMarker() async {
-    ByteData byteData = await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
+    ByteData byteData =
+        await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
     return byteData.buffer.asUint8List();
   }
 
@@ -132,12 +130,7 @@ class _DBus1State extends State<DBus1> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children:<Widget> [
             FloatingActionButton(
-              child: Text("START",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontFamily: 'DancingScript',
-                ),),
+              child: Text("START"),
               heroTag: "FABstart",
               onPressed: () {
                 getCurrentLocation();
@@ -151,9 +144,9 @@ class _DBus1State extends State<DBus1> {
                 fontFamily: 'DancingScript',
               ),),
               onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder:(context) => DBus1() ));
+                _locationSubscription.cancel();
               }
-              
+
             )
           ],
         )

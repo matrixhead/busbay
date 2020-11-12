@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'PassengerBusList.dart';
 import 'Passenger/profile.dart';
-import 'Passenger/Settings.dart';
 
 
 class PNav extends StatefulWidget {
@@ -40,8 +39,7 @@ class _PNavState extends State<PNav> {
               Icons.directions_bus,
               
             ),
-            backgroundColor: Color.fromRGBO(
-                39, 105, 171, 1),
+            backgroundColor: Colors.blueAccent,
             label: "BUS",
             
           ),
@@ -50,15 +48,14 @@ class _PNavState extends State<PNav> {
               Icons.account_circle_rounded
             ),
             label: "profile",
-            backgroundColor: Color(0xFF040021),
+            backgroundColor: Colors.blueAccent,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
             ),
             label: "settings",
-            backgroundColor: Color.fromRGBO(
-                39, 105, 171, 1),
+            backgroundColor: Colors.blueAccent,
           ),
         ],
         currentIndex: _selectedIndex,
