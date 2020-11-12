@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'PassengerBusList.dart';
 import 'Passenger/profile.dart';
+import 'package:busbay/Passenger/Settings.dart';
 
 
 class PNav extends StatefulWidget {
@@ -13,8 +14,8 @@ class _PNavState extends State<PNav> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     passengerspeeddail(),
-    ProfilePassenger(),
-    Text('Profile Screen'),
+    ProfileScreen(),
+    SettingsPassenger(),
   ];
 
   void _onItemTap(int index) {
@@ -36,7 +37,7 @@ class _PNavState extends State<PNav> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.bus_alert,
+              Icons.directions_bus,
               
             ),
             backgroundColor: Colors.blueAccent,
@@ -45,7 +46,7 @@ class _PNavState extends State<PNav> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person
+              Icons.account_circle_rounded
             ),
             label: "profile",
             backgroundColor: Colors.blueAccent,

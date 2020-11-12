@@ -13,7 +13,16 @@ class RegisterBusBay extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Center(child: StudentRegi())),
+      home: Scaffold(
+          body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/icons/e.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: StudentRegi()
+          )),
     );
   }
 }
@@ -49,7 +58,8 @@ class _StudentRegiState extends State<StudentRegi> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: Color(0xFF6200EA),
+            //color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -105,7 +115,8 @@ class _StudentRegiState extends State<StudentRegi> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: Color(0xFF6200EA),
+            //color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -117,7 +128,8 @@ class _StudentRegiState extends State<StudentRegi> {
           ),
           height: 60.0,
            child: DropdownButtonFormField(
-             dropdownColor: Color(0xFF6200EA),
+             //dropdownColor: Color(0xFF6200EA),
+             dropdownColor: Colors.blueGrey,
              isExpanded: true,
               decoration: InputDecoration.collapsed(hintText: ''),
             style: TextStyle(
@@ -172,7 +184,8 @@ class _StudentRegiState extends State<StudentRegi> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: Color(0xFF6200EA),
+           // color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -184,7 +197,8 @@ class _StudentRegiState extends State<StudentRegi> {
           ),
           height: 60.0,
           child: DropdownButtonFormField(
-            dropdownColor: Color(0xFF6200EA),
+            //dropdownColor: Color(0xFF6200EA),
+            dropdownColor: Colors.blueGrey,
             isExpanded: true,
             decoration: InputDecoration.collapsed(hintText: ''),
 
@@ -246,7 +260,8 @@ class _StudentRegiState extends State<StudentRegi> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: Color(0xFF6200EA),
+           // color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -308,7 +323,8 @@ class _StudentRegiState extends State<StudentRegi> {
         Container(
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-            color: Color(0xFF4527A0),
+            //color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -440,7 +456,8 @@ class _StudentRegiState extends State<StudentRegi> {
         child: Text(
           'LOGIN',
           style: TextStyle(
-            color: Color(0xFF6200EA),
+            //color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -568,7 +585,7 @@ class _StudentRegiState extends State<StudentRegi> {
               Container(
                 height: double.infinity,
                 width: double.infinity,
-                decoration: BoxDecoration(
+              /*  decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -580,7 +597,7 @@ class _StudentRegiState extends State<StudentRegi> {
                     ],
                     stops: [0.1, 0.4, 0.7, 0.9],
                   ),
-                ),
+                ), */
               ),
               Container(
                 height: double.infinity,

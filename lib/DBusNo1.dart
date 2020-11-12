@@ -9,12 +9,9 @@ import 'package:location/location.dart';
 import 'logic/data.dart';
 //import 'package:busbay/DriverBusList.dart';
 
-
-
 class DBus1 extends StatefulWidget {
   final Bus bus;
   DBus1({Key key, this.bus}) : super(key: key);
-  
 
   @override
   _DBus1State createState() => _DBus1State();
@@ -33,7 +30,8 @@ class _DBus1State extends State<DBus1> {
   );
 
   Future<Uint8List> getMarker() async {
-    ByteData byteData = await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
+    ByteData byteData =
+        await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
     return byteData.buffer.asUint8List();
   }
 
@@ -104,7 +102,12 @@ class _DBus1State extends State<DBus1> {
     return Scaffold(
     
       appBar: AppBar(
-        title: Text(widget.bus?.name??"selectBus"),
+        title: Text(widget.bus?.name??"select Bus",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontFamily: 'Courgette',
+          ),),
       ),
       body: GoogleMap(
         scrollGesturesEnabled: true,
@@ -135,11 +138,15 @@ class _DBus1State extends State<DBus1> {
             ,),
             FloatingActionButton(
               heroTag: "FABend",
-              child: Text("END"),
+              child: Text("END",style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'DancingScript',
+              ),),
               onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder:(context) => DBus1() ));
+                _locationSubscription.cancel();
               }
-              
+
             )
           ],
         )
