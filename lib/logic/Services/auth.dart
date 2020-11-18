@@ -1,7 +1,7 @@
 // ignore: unused_import
 import 'dart:async';
 
-import 'package:busbay/logic/data.dart';
+import 'package:busbay/logic/Services/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -71,6 +71,10 @@ class AuthService extends ChangeNotifier {
         loading.add(false);
       }
     }
+  }
+
+ String getCurrentUserid(){
+    return _auth.currentUser.uid;
   }
 
 }

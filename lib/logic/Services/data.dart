@@ -69,3 +69,17 @@ Stream getBusLoc(Bus bus){
  CollectionReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool");
  return ref.doc("currentlocation").snapshots();
 }
+
+void updateDroppedPins(Bus bus,String uid,LocationData newLocalData)async{
+  DocumentReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool").doc("droppedpins");
+  ref.set({
+    uid:GeoPoint(newLocalData.latitude, newLocalData.longitude)
+  });
+}
+
+Stream getPins(Bus bus){
+  {
+    CollectionReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool");
+    return ref.doc("droppedpins").snapshots();
+  }
+}

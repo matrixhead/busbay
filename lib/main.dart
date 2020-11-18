@@ -1,7 +1,4 @@
-import 'package:busbay/DriverBusList.dart';
-import 'package:busbay/PassengerBusList.dart';
-import 'package:busbay/logic/auth.dart';
-import 'package:busbay/ui/home.dart';
+import 'package:busbay/logic/Services/auth.dart';
 import 'package:busbay/StudentRegister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,22 +8,25 @@ import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'logic/data.dart';
+import 'logic/Services/data.dart';
 import 'Passenger_nav.dart';
 import 'drivers_nav.dart';
+import 'logic/service_locator.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setupServiceLocator();
   runApp(App());
 }
 
 class App extends StatelessWidget {
+  AuthService model = serviceLocator<AuthService>();
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => AuthService(), child: MyApp());
+        create: (context) => model, child: MyApp());
   }
 }
 
