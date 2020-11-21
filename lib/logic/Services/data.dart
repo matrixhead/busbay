@@ -25,7 +25,7 @@ class Bus {
   final Map<String, dynamic> stops;
 
   Bus.fromSnapShot(DocumentSnapshot snapshot)
-      : docID=snapshot.id,
+      : docID = snapshot.id,
         id = snapshot.data()['id'],
         name = snapshot.data()['name'],
         status = snapshot.data()['status'],
@@ -33,12 +33,19 @@ class Bus {
         stops = snapshot.data()['stops'];
 }
 
-void createUserData(User user) async {
+void createUserData(String uid, email, name, department, route, stop) async {
   DocumentReference ref =
-      FirebaseFirestore.instance.collection('users').doc(user.uid);
+      FirebaseFirestore.instance.collection('users').doc(uid);
 
-  return ref.set({'uid': user.uid, 'email': user.email, 'role': 2},
-      SetOptions(merge: true));
+  return ref.set({
+    'uid': uid,
+    'email': email,
+    'role': 2,
+    'name': name,
+    'department': department,
+    "route": route,
+    "stop": stop,
+  }, SetOptions(merge: true));
 }
 
 Future<bool> isDriver(String uid) async {
@@ -56,30 +63,33 @@ Future<List<Bus>> getAllBus() async {
   return snapshot.docs.map((doc) => Bus.fromSnapShot(doc)).toList();
 }
 
-void updateBusLocation(Bus bus, LocationData newLocalData) async{
-  DocumentReference ref =
-  FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool").doc("currentlocation");
+void updateBusLocation(Bus bus, LocationData newLocalData) async {
+  DocumentReference ref = FirebaseFirestore.instance
+      .collection("buses/" + bus.docID + "/locationPool")
+      .doc("currentlocation");
   ref.set({
-    'points':GeoPoint(newLocalData.latitude, newLocalData.longitude),
-    'heading':newLocalData.heading
+    'points': GeoPoint(newLocalData.latitude, newLocalData.longitude),
+    'heading': newLocalData.heading
   });
 }
 
-Stream getBusLoc(Bus bus){
- CollectionReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool");
- return ref.doc("currentlocation").snapshots();
+Stream getBusLoc(Bus bus) {
+  CollectionReference ref = FirebaseFirestore.instance
+      .collection("buses/" + bus.docID + "/locationPool");
+  return ref.doc("currentlocation").snapshots();
 }
 
-void updateDroppedPins(Bus bus,String uid,LocationData newLocalData)async{
-  DocumentReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool").doc("droppedpins");
-  ref.set({
-    uid:GeoPoint(newLocalData.latitude, newLocalData.longitude)
-  });
+void updateDroppedPins(Bus bus, String uid, LocationData newLocalData) async {
+  DocumentReference ref = FirebaseFirestore.instance
+      .collection("buses/" + bus.docID + "/locationPool")
+      .doc("droppedpins");
+  ref.set({uid: GeoPoint(newLocalData.latitude, newLocalData.longitude)});
 }
 
-Stream getPins(Bus bus){
+Stream getPins(Bus bus) {
   {
-    CollectionReference ref = FirebaseFirestore.instance.collection("buses/"+bus.docID+"/locationPool");
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection("buses/" + bus.docID + "/locationPool");
     return ref.doc("droppedpins").snapshots();
   }
 }

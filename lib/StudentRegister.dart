@@ -32,17 +32,13 @@ class StudentRegi extends StatefulWidget {
 }
 
 class _StudentRegiState extends State<StudentRegi> {
-  
-  StudentRegisterView studentRegisterView = serviceLocator<StudentRegisterView>();
-  
-  String _username, _email, _password = "";
-  String dropdownValue = 'Department';
-  final _emailcontroller = TextEditingController();
+  StudentRegisterView studentRegisterView =
+      serviceLocator<StudentRegisterView>();
+
   final _formKey = new GlobalKey<FormState>();
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  bool _rememberMe = false;
 
-  Widget _buildNameTF() {
+  Widget _buildNameTF(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -90,21 +86,24 @@ class _StudentRegiState extends State<StudentRegi> {
               ),
             ),
             validator: (val) {
-              Pattern pattern = r'^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$';
-              RegExp regex = new RegExp(pattern);
-              if (!regex.hasMatch(val))
-                return 'Invalid username';
-              else
-                return null;
+              String validation =
+                  Provider.of<StudentRegisterView>(context, listen: false)
+                      .validations["name"];
+              if (validation != null) {
+                return validation;
+              }
+              return null;
             },
-            onSaved: (val) => _username = val,
+            onChanged: (val) =>
+                Provider.of<StudentRegisterView>(context, listen: false).name =
+                    val,
           ),
         ),
       ],
     );
   }
 
-  Widget _departmentDropdown() {
+  Widget _departmentDropdown(context) {
     return Column(
       //mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,20 +132,32 @@ class _StudentRegiState extends State<StudentRegi> {
               color: Colors.white,
               fontFamily: 'OpenSans',
             ),
-            value: dropdownValue,
+            value: Provider.of<StudentRegisterView>(context, listen: false)
+                .selectedDepartment,
             icon: Icon(Icons.arrow_drop_down_rounded),
             iconSize: 30,
             iconEnabledColor: Colors.white,
             elevation: 16,
             onChanged: (String newValue) {
-              setState(() {
-                dropdownValue = newValue;
-              });
+              Provider.of<StudentRegisterView>(context, listen: false)
+                  .selectedDepartment = newValue;
             },
-            validator: (value) =>
-                value == 'Department' ? 'Mandatory field' : null,
-            items: <String>['One', 'Department', 'Two', 'Free', 'Four']
-                .map<DropdownMenuItem<String>>((String value) {
+            validator: (val) {
+              String validation =
+                  Provider.of<StudentRegisterView>(context, listen: false)
+                      .validations["selectedDepartment"];
+              if (validation != null) {
+                return validation;
+              }
+              return null;
+            },
+            items: <String>[
+              'select your department',
+              'Computer Science',
+              'Mechanical',
+              'Electrical',
+              'Civil'
+            ].map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 //child: Text(value),
@@ -189,9 +200,7 @@ class _StudentRegiState extends State<StudentRegi> {
             ],
           ),
           height: 60.0,
-          child: Consumer<StudentRegisterView>(
-
-            builder:(context,view,child){
+          child: Consumer<StudentRegisterView>(builder: (context, view, child) {
             return DropdownButtonFormField(
               //dropdownColor: Color(0xFF6200EA),
               dropdownColor: Colors.blueGrey,
@@ -202,18 +211,23 @@ class _StudentRegiState extends State<StudentRegi> {
                 color: Colors.white,
                 fontFamily: 'OpenSans',
               ),
-              value: view.defaultRouteDropdownValue,
+              value: view.selectedRoute,
               icon: Icon(Icons.arrow_drop_down_rounded),
               iconSize: 30,
               iconEnabledColor: Colors.white,
               elevation: 16,
               onChanged: (String newValue) {
-                setState(() {
-                  view.defaultRouteDropdownValue = newValue;
-                });
+                view.selectedRoute = newValue;
+                view.setStops();
               },
-              validator: (value) => value == 'Route' ? 'Mandatory field' : null,
-              items: view.busnameList
+              validator: (val) {
+                String validation = view.validations["selectedRoute"];
+                if (validation != null) {
+                  return validation;
+                }
+                return null;
+              },
+              items: view.busNameList
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -231,14 +245,85 @@ class _StudentRegiState extends State<StudentRegi> {
                   ),
                 );
               }).toList(),
-            );}
-          ),
+            );
+          }),
         ),
       ],
     );
   }
 
-  Widget _buildEmailTF() {
+  Widget _defaultStopDropdown(context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            // color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: Consumer<StudentRegisterView>(builder: (context, view, child) {
+            return DropdownButtonFormField(
+              //dropdownColor: Color(0xFF6200EA),
+              dropdownColor: Colors.blueGrey,
+              isExpanded: true,
+              decoration: InputDecoration.collapsed(hintText: ''),
+
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              value: view.selectedstop,
+              icon: Icon(Icons.arrow_drop_down_rounded),
+              iconSize: 30,
+              iconEnabledColor: Colors.white,
+              elevation: 16,
+              onChanged: (String newValue) {
+                view.selectedstop = newValue;
+              },
+              validator: (val) {
+                String validation = view.validations["selectedstop"];
+                if (validation != null) {
+                  return validation;
+                }
+                return null;
+              },
+              items: view.selectedRoutestops
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  //child: Text(value),
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        value,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmailTF(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -267,7 +352,6 @@ class _StudentRegiState extends State<StudentRegi> {
           ),
           height: 60.0,
           child: TextFormField(
-            controller: _emailcontroller,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -287,21 +371,24 @@ class _StudentRegiState extends State<StudentRegi> {
               ),
             ),
             validator: (val) {
-              if (val.length == 0)
-                return "Please enter email";
-              else if (!val.contains("@rit.ac.in"))
-                return "Use Your RIT domain email";
-              else
-                return null;
+              String validation =
+                  Provider.of<StudentRegisterView>(context, listen: false)
+                      .validations["email"];
+              if (validation != null) {
+                return validation;
+              }
+              return null;
             },
-            onSaved: (val) => _email = val,
+            onChanged: (val) =>
+                Provider.of<StudentRegisterView>(context, listen: false).email =
+                    val,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildPasswordTF() {
+  Widget _buildPasswordTF(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -330,65 +417,76 @@ class _StudentRegiState extends State<StudentRegi> {
           ),
           height: 60.0,
           child: TextFormField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
+              obscureText: true,
+              style: TextStyle(
                 color: Colors.white,
-              ),
-              hintText: 'Enter your Password',
-              hintStyle: TextStyle(
-                color: Colors.white54,
                 fontFamily: 'OpenSans',
               ),
-            ),
-            validator: (val) {
-              if (val.length == 0)
-                return "Please enter password";
-              else if (val.length <= 5)
-                return "Your password should be more then 6 char long";
-              else
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: 'Enter your Password',
+                hintStyle: TextStyle(
+                  color: Colors.white54,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
+              validator: (val) {
+                String validation =
+                    Provider.of<StudentRegisterView>(context, listen: false)
+                        .validations["password"];
+                if (validation != null) {
+                  return validation;
+                }
                 return null;
-            },
-            onSaved: (val) => _password = val,
-          ),
+              },
+              onChanged: (val) =>
+                  Provider.of<StudentRegisterView>(context, listen: false)
+                      .password = val),
         ),
       ],
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildSignUpBtn(context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => App()));
-            Fluttertoast.showToast(
-                msg: 'Registerd Succesfully',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIos: 1,
-                backgroundColor: Colors.white,
-                textColor: Colors.black);
-            _scaffoldKey.currentState.showSnackBar(new SnackBar(
-              content: new Text("Username: $_username\n"
-                  "Email: $_email\n"
-                  "Password: $_password\n"
-                  "Department: $dropdownValue\n"
-                  ),
-            ));
-          }
+          Provider.of<StudentRegisterView>(context, listen: false)
+              .onRegisterButtonPressed()
+              .then((value) {
+            if (_formKey.currentState.validate()) {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => App()));
+            }
+          });
+
+          // if (_formKey.currentState.validate()) {
+          //   _formKey.currentState.save();
+          //   Navigator.push(
+          //       context, MaterialPageRoute(builder: (context) => App()));
+          //   Fluttertoast.showToast(
+          //       msg: 'Registerd Succesfully',
+          //       toastLength: Toast.LENGTH_SHORT,
+          //       gravity: ToastGravity.BOTTOM,
+          //       timeInSecForIos: 1,
+          //       backgroundColor: Colors.white,
+          //       textColor: Colors.black);
+          //   _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          //     content: new Text("Username: $_username\n"
+          //         "Email: $_email\n"
+          //         "Password: $_password\n"
+          //         "Department: $dropdownValue\n"),
+          //   ));
+          //}
+          // setState(() {});
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -410,7 +508,7 @@ class _StudentRegiState extends State<StudentRegi> {
     );
   }
 
-  Widget _buildSignupBtn() {
+  Widget _buildLoginBtn() {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -479,33 +577,37 @@ class _StudentRegiState extends State<StudentRegi> {
                 vertical: 120.0,
               ),
               child: ChangeNotifierProvider(
-                create:(context) => studentRegisterView,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Register Here',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'OpenSans',
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
+                create: (context) => studentRegisterView,
+                child: Builder(builder: (context) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Register Here',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'OpenSans',
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20.0),
-                    _buildNameTF(),
-                    SizedBox(height: 20.0),
-                    _departmentDropdown(),
-                    SizedBox(height: 20.0),
-                    _defaultRouteDropdown(context),
-                    SizedBox(height: 20.0),
-                    _buildEmailTF(),
-                    SizedBox(height: 20.0),
-                    _buildPasswordTF(),
-                    _buildLoginBtn(),
-                    _buildSignupBtn(),
-                  ],
-                ),
+                      SizedBox(height: 20.0),
+                      _buildNameTF(context),
+                      SizedBox(height: 20.0),
+                      _departmentDropdown(context),
+                      SizedBox(height: 20.0),
+                      _defaultRouteDropdown(context),
+                      SizedBox(height: 20.0),
+                      _defaultStopDropdown(context),
+                      SizedBox(height: 20.0),
+                      _buildEmailTF(context),
+                      SizedBox(height: 20.0),
+                      _buildPasswordTF(context),
+                      _buildSignUpBtn(context),
+                      _buildLoginBtn(),
+                    ],
+                  );
+                }),
               ),
             ),
           )
