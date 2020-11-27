@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:busbay/Passenger_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'logic/Services/data.dart';
-//import 'package:busbay/DriverBusList.dart';
 
 class DBus1 extends StatefulWidget {
   final Bus bus;
@@ -58,7 +56,6 @@ class _DBus1State extends State<DBus1> {
 
   void getCurrentLocation() async {
     try {
-
       Uint8List imageData = await getMarker();
       var location = await _locationTracker.getLocation();
 
@@ -68,19 +65,19 @@ class _DBus1State extends State<DBus1> {
         _locationSubscription.cancel();
       }
 
-
-      _locationSubscription = _locationTracker.onLocationChanged.listen((newLocalData) {
+      _locationSubscription =
+          _locationTracker.onLocationChanged.listen((newLocalData) {
         if (_controller != null) {
-          _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
-              bearing: 192.8334901395799,
-              target: LatLng(newLocalData.latitude, newLocalData.longitude),
-              tilt: 0,
-              zoom: 18.00)));
-         
+          _controller.animateCamera(CameraUpdate.newCameraPosition(
+              new CameraPosition(
+                  bearing: 192.8334901395799,
+                  target: LatLng(newLocalData.latitude, newLocalData.longitude),
+                  tilt: 0,
+                  zoom: 18.00)));
+
           updateMarkerAndCircle(newLocalData, imageData);
         }
       });
-
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         debugPrint("Permission Denied");
@@ -99,14 +96,15 @@ class _DBus1State extends State<DBus1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       appBar: AppBar(
-        title: Text(widget.bus?.name??"select Bus",
+        title: Text(
+          widget.bus?.name ?? "select Bus",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontFamily: 'Courgette',
-          ),),
+          ),
+        ),
       ),
       body: GoogleMap(
         scrollGesturesEnabled: true,
@@ -118,39 +116,37 @@ class _DBus1State extends State<DBus1> {
         circles: Set.of((circle != null) ? [circle] : []),
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
-         
         },
-
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children:<Widget> [
+          children: <Widget>[
             FloatingActionButton(
               child: Text("START"),
               heroTag: "FABstart",
               onPressed: () {
                 getCurrentLocation();
-              }
-            ,),
+              },
+            ),
             FloatingActionButton(
-              heroTag: "FABend",
-              child: Text("END",style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontFamily: 'DancingScript',
-              ),),
-              onPressed: () {
-                _locationSubscription.cancel();
-              }
-
-            )
+                heroTag: "FABend",
+                child: Text(
+                  "END",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontFamily: 'DancingScript',
+                  ),
+                ),
+                onPressed: () {
+                  _locationSubscription.cancel();
+                })
           ],
-        )
-      ,),
-      
+        ),
+      ),
     );
   }
 }
