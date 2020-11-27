@@ -10,6 +10,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'logic/Services/data.dart';
+import 'logic/Services/auth.dart';
+import 'package:busbay/logic/Services/pro.dart';
 import 'Passenger_nav.dart';
 import 'drivers_nav.dart';
 import 'logic/service_locator.dart';
@@ -32,20 +34,23 @@ class App extends StatelessWidget {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(fontFamily: "Montserrat"),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/icons/e.jpg"),
-              fit: BoxFit.cover,
+    return StreamProvider.value(
+      value: AuthService().usr,
+      child: MaterialApp(
+        theme: ThemeData(fontFamily: "Montserrat"),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+         resizeToAvoidBottomInset: false,
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/icons/e.jpg"),
+                fit: BoxFit.cover,
+              ),
             ),
+            child: LoginPage(),
           ),
-          child: LoginPage(),
-        ),
+       ),
       ),
     );
   }
@@ -118,7 +123,6 @@ class _LoginPageState extends State<LoginPage> {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
     _loginHeight = windowHeight - 270;
-
     switch (_pageState) {
       case 0:
         //_backgroundColor = Colors.deepPurpleAccent;
