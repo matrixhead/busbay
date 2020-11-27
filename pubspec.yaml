@@ -37,6 +37,7 @@ dependencies:
   google_sign_in: 4.5.4
   rxdart: 0.20.0
   provider: ^4.3.2+2
+  get_it: ^5.0.1
   flutter_icons: ^1.1.0
 
 
@@ -71,7 +72,7 @@ flutter:
 
     - family: NiseBuschGardens
       fonts:
-        - asset: assets/fo/Nisebuschgardens.ttf
+        - asset: assets/fo/NiseBuschGardens.ttf
 
     - family: DancingScript
       fonts:

@@ -1,8 +1,6 @@
-import 'package:busbay/DriverBusList.dart';
-import 'package:busbay/PassengerBusList.dart';
-import 'package:busbay/logic/auth.dart';
-import 'package:busbay/ui/home.dart';
+import 'package:busbay/logic/Services/auth.dart';
 import 'package:busbay/StudentRegister.dart';
+import 'package:busbay/logic/view_models/main_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,22 +9,23 @@ import 'package:provider/provider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'logic/data.dart';
+import 'logic/Services/data.dart';
 import 'Passenger_nav.dart';
 import 'drivers_nav.dart';
-
+import 'logic/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setupServiceLocator();
   runApp(App());
 }
 
 class App extends StatelessWidget {
+  MainViewModel model = serviceLocator<MainViewModel>();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => AuthService(), child: MyApp());
+    return ChangeNotifierProvider(create: (context) => model, child: MyApp());
   }
 }
 
@@ -72,8 +71,6 @@ class _LoginPageState extends State<LoginPage> {
 
   double _loginYOffset = 0;
   double _loginXOffset = 0;
-  double _registerYOffset = 0;
-  double _registerHeight = 0;
 
   double windowWidth = 0;
   double windowHeight = 0;
@@ -81,13 +78,11 @@ class _LoginPageState extends State<LoginPage> {
   bool _keyboardVisible = false;
   final emailCntrlr = TextEditingController();
   final passwordCntrlr = TextEditingController();
-  final emailSUCntrlr = TextEditingController();
-  final passwordSUCntrlr = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    Provider.of<AuthService>(context, listen: false).status.listen((event) {
+    Provider.of<MainViewModel>(context, listen: false).status.listen((event) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(event),
@@ -99,7 +94,10 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     });
-    Provider.of<AuthService>(context, listen: false).user.listen((event) {
+    Provider.of<MainViewModel>(context, listen: false)
+        .authService
+        .user
+        .listen((event) {
       if (event != null) {
         nav(isDriver(event.uid));
       }
@@ -120,7 +118,6 @@ class _LoginPageState extends State<LoginPage> {
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
     _loginHeight = windowHeight - 270;
-    _registerHeight = windowHeight - 270;
 
     switch (_pageState) {
       case 0:
@@ -136,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
         _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
 
         _loginXOffset = 0;
-        _registerYOffset = windowHeight;
+
         break;
       case 1:
         //_backgroundColor = Colors.deepPurple[600];
@@ -151,10 +148,10 @@ class _LoginPageState extends State<LoginPage> {
         _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
 
         _loginXOffset = 0;
-        _registerYOffset = windowHeight;
+
         break;
       case 2:
-       //_backgroundColor = Color(0xFFBD34C59);
+        //_backgroundColor = Color(0xFFBD34C59);
         _headingColor = Colors.black;
 
         _headingTop = 80;
@@ -166,8 +163,7 @@ class _LoginPageState extends State<LoginPage> {
         _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 240;
 
         _loginXOffset = 20;
-        _registerYOffset = _keyboardVisible ? 55 : 270;
-       _registerHeight = _keyboardVisible ? windowHeight : windowHeight-270 ;
+
         break;
     }
 
@@ -186,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                       _pageState = 0;
                     });
                   },
-                  child: Container(
+                  child: Center(
                     child: Column(
                       children: <Widget>[
                         AnimatedContainer(
@@ -198,7 +194,9 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "bus Bay",
                             style: TextStyle(
-                                color: Color(0xFFF44336), fontSize: 40, fontFamily: 'PermMarker'),
+                                color: Color(0xFFF44336),
+                                fontSize: 40,
+                                fontFamily: 'PermMarker'),
                           ),
                         ),
                         Container(
@@ -215,14 +213,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-              /*  Container(
+                /*  Container(
                   padding: EdgeInsets.symmetric(horizontal: 32),
                   child: Center(
                     child: Image.asset("assets/icons/b.png"),
                   ),
                 ), */
                 StreamBuilder(
-                    stream: Provider.of<AuthService>(context, listen: false)
+                    stream: Provider.of<MainViewModel>(context, listen: false)
                         .loading,
                     builder: (context, snapshot) {
                       if (snapshot.data == true) {
@@ -231,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.all(20),
                             child: CircularProgressIndicator(
                               strokeWidth: 1.0,
-                             // backgroundColor: _backgroundColor,
+                              // backgroundColor: _backgroundColor,
                             ));
                       } else {
                         return Container(
@@ -293,9 +291,7 @@ class _LoginPageState extends State<LoginPage> {
                     icon: Icons.email,
                     hint: "Enter Email...",
                     controller: emailCntrlr,
-
                   ),
-
                   SizedBox(
                     height: 20,
                   ),
@@ -308,17 +304,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Column(
                 children: <Widget>[
-                  Consumer<AuthService>(builder: (context, authService, child) {
+                  Consumer<MainViewModel>(builder: (context, view, child) {
                     return InkWell(
                         onTap: () {
                           isvalid = EmailValidator.validate(emailCntrlr.text);
                           if (isvalid) {
-                            authService.emailSignIn(
+                            view.onLoginButtonClicked(
                                 emailCntrlr.text, passwordCntrlr.text);
                             passwordCntrlr.clear();
-                           //Navigator.push(context,MaterialPageRoute(builder: (context) => App()));
+                            //Navigator.push(context,MaterialPageRoute(builder: (context) => App()));
                           } else {
-                                Fluttertoast.showToast(
+                            Fluttertoast.showToast(
                                 msg: "Please Enter a valid Email",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
@@ -334,7 +330,6 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: PrimaryButton(
                           btnText: "Login",
-
                         ));
                   }),
                   SizedBox(
@@ -342,10 +337,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () {
-
                       setState(() {
-                     Navigator.push(context, MaterialPageRoute(builder:(context) => RegisterBusBay() ));
-                       //_pageState = 2;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterBusBay()));
+                        //_pageState = 2;
                       });
                     },
                     child: OutlineBtn(
@@ -357,82 +354,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-
                       setState(() {
                         _pageState = 0;
                       });
-
-
                     },
                     child: OutlineBtn(
                       btnText: "Cancel",
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-        AnimatedContainer(
-          height: _registerHeight,
-          padding: EdgeInsets.all(32),
-          curve: Curves.fastLinearToSlowEaseIn,
-          duration: Duration(milliseconds: 1000),
-          transform: Matrix4.translationValues(0, _registerYOffset, 1),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25), topRight: Radius.circular(25))),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      "Create a New Account",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  InputWithIcon(
-                    icon: Icons.email,
-                    hint: "Enter Email...",
-                    controller: emailSUCntrlr,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  InputWithIcon(
-                    icon: Icons.vpn_key,
-                    hint: "Enter Password...",
-                    controller: passwordSUCntrlr,
-                    obscureText: true,
-                  )
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Consumer<AuthService>(builder: (context, authService, child) {
-                    return InkWell(
-                      onTap: () => authService.emailSignUp(
-                          emailSUCntrlr.text, passwordSUCntrlr.text),
-                      child: PrimaryButton(
-                        btnText: "Create Account",
-                      ),
-                    );
-                  }),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _pageState = 1;
-                      });
-                    },
-                    child: OutlineBtn(
-                      btnText: "Back To Login",
                     ),
                   )
                 ],
@@ -455,10 +382,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
   }
-
-
-
-
 }
 
 class InputWithIcon extends StatefulWidget {
@@ -559,5 +482,3 @@ class _OutlineBtnState extends State<OutlineBtn> {
     );
   }
 }
-
-
