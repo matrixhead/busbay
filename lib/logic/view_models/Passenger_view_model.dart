@@ -12,12 +12,11 @@ import 'package:location/location.dart';
 import '../service_locator.dart';
 
 class MapView extends ChangeNotifier {
-
   AuthService authService = serviceLocator<AuthService>();
 
   GoogleMapController mapController;
   CameraPosition initialLocation;
-  Map<int, Marker> markerList = {};
+  Map<String, Marker> markerList = {};
   List<Circle> circleList = [];
   Location _locationTracker;
   List<Bus> busList = [];
@@ -29,7 +28,7 @@ class MapView extends ChangeNotifier {
         CameraPosition(target: LatLng(9.577142, 76.622592), zoom: 14.4746);
     _locationTracker = Location();
     loadBusData();
-    currentUser=authService.getCurrentUserid();
+    currentUser = authService.getCurrentUserid();
     print(currentUser);
   }
 
@@ -57,7 +56,7 @@ class MapView extends ChangeNotifier {
   void dropPassengerMarker() async {
     try {
       LocationData location = await _locationTracker.getLocation();
-      markerList[0] = Marker(
+      markerList["passenger"] = Marker(
           markerId: MarkerId("home"),
           position: LatLng(location.latitude, location.longitude),
           draggable: false,
@@ -85,7 +84,8 @@ class MapView extends ChangeNotifier {
 
   void showbus(Bus bus) {
     trackBus(bus);
-    selectedBus=bus;
+    updateStopMarkers(bus);
+    selectedBus = bus;
     notifyListeners();
   }
 
@@ -94,12 +94,17 @@ class MapView extends ChangeNotifier {
     return byteData.buffer.asUint8List();
   }
 
+  Future<Uint8List> getStopMarker() async {
+    ByteData byteData = await rootBundle.load("assets/images/bus.png");
+    return byteData.buffer.asUint8List();
+  }
+
   Future<void> trackBus(Bus bus) async {
     if (bus != null) {
       Uint8List imageData = await getMarker();
       getBusLoc(bus).listen((snapshot) {
         GeoPoint point = snapshot.data()['points'];
-        markerList[1] = Marker(
+        markerList["bus"] = Marker(
             markerId: MarkerId("bus"),
             position: LatLng(point.latitude, point.longitude),
             rotation: snapshot.data()['heading'],
@@ -111,5 +116,19 @@ class MapView extends ChangeNotifier {
         _animateCamera(LatLng(point.latitude, point.longitude));
       });
     }
+  }
+
+  void updateStopMarkers(Bus bus) async {
+    markerList.removeWhere((key, value) => key.contains("stop"));
+    Uint8List imageData = await getStopMarker();
+    bus.stops.forEach((key, value) {
+      GeoPoint point = value;
+      markerList["stop" + key] = Marker(
+          markerId: MarkerId(key),
+          position: LatLng(point.latitude, point.longitude),
+          zIndex: 2,
+          anchor: Offset(0.78, 0.78),
+          icon: BitmapDescriptor.fromBytes(imageData));
+    });
   }
 }

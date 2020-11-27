@@ -18,7 +18,6 @@ class driverspeeddail extends StatefulWidget {
 
 class driverspeeddailState extends State<driverspeeddail>
     with TickerProviderStateMixin {
-  ScrollController scrollController;
   bool dialVisible = true;
   Bus _selectedBus;
 
@@ -73,7 +72,6 @@ class driverspeeddailState extends State<driverspeeddail>
               } else {
                 return CircularProgressIndicator();
               }
-            })
-    );
+            }));
   }
 }
