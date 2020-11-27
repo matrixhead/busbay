@@ -15,7 +15,7 @@ class passengerspeeddail extends StatefulWidget {
 
 class passengerspeeddailState extends State<passengerspeeddail>
     with TickerProviderStateMixin {
-  MapView mapView = serviceLocator<MapView>();
+  PassengerMapView mapView = serviceLocator<PassengerMapView>();
 
   SpeedDialChild buildSpeedDialChild(Bus bus, context) {
     return SpeedDialChild(
@@ -29,7 +29,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
       ),
       backgroundColor: Colors.lightBlueAccent,
       onTap: () {
-        Provider.of<MapView>(context, listen: false).showbus(bus);
+        Provider.of<PassengerMapView>(context, listen: false).showbus(bus);
       },
       label: 'route ' + bus.id.toString(),
       labelStyle: TextStyle(fontWeight: FontWeight.w500),
@@ -41,9 +41,9 @@ class passengerspeeddailState extends State<passengerspeeddail>
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<MapView>(create: (context) => mapView),
+        ChangeNotifierProvider<PassengerMapView>(create: (context) => mapView),
       ],
-      child: Consumer<MapView>(builder: (context, view, child) {
+      child: Consumer<PassengerMapView>(builder: (context, view, child) {
         return Scaffold(
           body: Scaffold(
             appBar: AppBar(

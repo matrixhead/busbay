@@ -9,7 +9,7 @@ GetIt serviceLocator = GetIt.instance;
 void setupServiceLocator() {
   serviceLocator.registerLazySingleton<AuthService>(() => AuthService());
 
-  serviceLocator.registerFactory(() => MapView());
+  serviceLocator.registerFactory(() => PassengerMapView());
   serviceLocator.registerFactory(() => StudentRegisterView());
   serviceLocator.registerFactory(() => MainViewModel());
 }

@@ -11,7 +11,7 @@ import 'package:location/location.dart';
 
 import '../service_locator.dart';
 
-class MapView extends ChangeNotifier {
+class PassengerMapView extends ChangeNotifier {
   AuthService authService = serviceLocator<AuthService>();
 
   GoogleMapController mapController;
@@ -23,7 +23,7 @@ class MapView extends ChangeNotifier {
   Bus selectedBus;
   String currentUser;
 
-  MapView() {
+  PassengerMapView() {
     initialLocation =
         CameraPosition(target: LatLng(9.577142, 76.622592), zoom: 14.4746);
     _locationTracker = Location();
