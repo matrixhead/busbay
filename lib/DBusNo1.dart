@@ -113,7 +113,7 @@ class _DBus1State extends State<DBus1> {
         scrollGesturesEnabled: true,
         myLocationButtonEnabled: true,
         zoomGesturesEnabled: true,
-        mapType: MapType.hybrid,
+        mapType: MapType.normal,
         initialCameraPosition: initialLocation,
         markers: Set.of((marker != null) ? [marker] : []),
         circles: Set.of((circle != null) ? [circle] : []),
@@ -130,7 +130,11 @@ class _DBus1State extends State<DBus1> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children:<Widget> [
             FloatingActionButton(
-              child: Text("START"),
+              child: Text("START",style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontFamily: 'DancingScript',
+              ),),
               heroTag: "FABstart",
               onPressed: () {
                 getCurrentLocation();
@@ -145,6 +149,7 @@ class _DBus1State extends State<DBus1> {
               ),),
               onPressed: () {
                 _locationSubscription.cancel();
+
               }
 
             )

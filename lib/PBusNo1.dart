@@ -15,7 +15,8 @@ class PBus1 extends StatefulWidget {
   _PBusNo1State createState() => _PBusNo1State();
 }
 
-class _PBusNo1State extends State<PBus1> {
+class _PBusNo1State extends State<PBus1> with AutomaticKeepAliveClientMixin {
+
   GoogleMapController mapController;
   StreamSubscription _locationSubscription;
   Location _locationTracker = Location();
@@ -164,6 +165,7 @@ class _PBusNo1State extends State<PBus1> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -226,6 +228,10 @@ class _PBusNo1State extends State<PBus1> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class PassengerLiftedState extends ChangeNotifier{

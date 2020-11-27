@@ -16,7 +16,7 @@ class passengerspeeddail extends StatefulWidget {
 }
 
 class passengerspeeddailState extends State<passengerspeeddail>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin,AutomaticKeepAliveClientMixin {
   Map<int, Marker> markerList = {};
   List<Circle> circleList = [];
   Location _locationTracker = Location();
@@ -124,6 +124,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Scaffold(
         appBar: AppBar(
@@ -165,4 +166,8 @@ class passengerspeeddailState extends State<passengerspeeddail>
           }),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

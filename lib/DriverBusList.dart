@@ -18,7 +18,7 @@ class driverspeeddail extends StatefulWidget {
 }
 
 class driverspeeddailState extends State<driverspeeddail>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin , AutomaticKeepAliveClientMixin{
   ScrollController scrollController;
   bool dialVisible = true;
   Bus _selectedBus;
@@ -51,6 +51,7 @@ class driverspeeddailState extends State<driverspeeddail>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: Center(
           child: DBus1(bus: _selectedBus),
@@ -77,4 +78,8 @@ class driverspeeddailState extends State<driverspeeddail>
             })
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
