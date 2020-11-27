@@ -14,8 +14,9 @@ class passengerspeeddail extends StatefulWidget {
 }
 
 class passengerspeeddailState extends State<passengerspeeddail>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin,AutomaticKeepAliveClientMixin  {
   PassengerMapView mapView = serviceLocator<PassengerMapView>();
+
 
   SpeedDialChild buildSpeedDialChild(Bus bus, context) {
     return SpeedDialChild(
@@ -39,6 +40,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<PassengerMapView>(create: (context) => mapView),
@@ -80,4 +82,8 @@ class passengerspeeddailState extends State<passengerspeeddail>
       }),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
