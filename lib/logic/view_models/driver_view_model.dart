@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:busbay/logic/Services/data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +11,8 @@ import 'package:flutter/material.dart';
 
 class DriverMapView extends ChangeNotifier {
   StreamSubscription locationSubscription;
+  Map<String, Marker> markerList = {};
+  List<Circle> circleList = [];
   Marker marker;
   Circle circle;
   CameraPosition initialLocation;
@@ -36,6 +39,8 @@ class DriverMapView extends ChangeNotifier {
 
   void showbus(Bus bus) {
     selectedBus = bus;
+    updateStopMarkers(bus);
+    listenForPindrops(bus);
     notifyListeners();
   }
 
@@ -47,7 +52,7 @@ class DriverMapView extends ChangeNotifier {
   void updateMarkerAndCircle(LocationData newLocalData, Uint8List imageData) {
     LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
 
-    marker = Marker(
+    markerList["bus"] = Marker(
         markerId: MarkerId("home"),
         position: latlng,
         rotation: newLocalData.heading,
@@ -56,13 +61,13 @@ class DriverMapView extends ChangeNotifier {
         flat: true,
         anchor: Offset(0.5, 0.5),
         icon: BitmapDescriptor.fromBytes(imageData));
-    circle = Circle(
+    circleList.add(Circle(
         circleId: CircleId("car"),
         radius: newLocalData.accuracy,
         zIndex: 1,
         strokeColor: Colors.blue,
         center: latlng,
-        fillColor: Colors.blue.withAlpha(70));
+        fillColor: Colors.blue.withAlpha(70)));
   }
 
   void getCurrentLocation() async {
@@ -85,7 +90,7 @@ class DriverMapView extends ChangeNotifier {
                   target: LatLng(newLocalData.latitude, newLocalData.longitude),
                   tilt: 0,
                   zoom: 18.00)));
-
+          updateBusLocation(selectedBus, newLocalData);
           updateMarkerAndCircle(newLocalData, imageData);
           notifyListeners();
         }
@@ -95,5 +100,44 @@ class DriverMapView extends ChangeNotifier {
         debugPrint("Permission Denied");
       }
     }
+  }
+
+  Future<Uint8List> getStopMarker() async {
+    ByteData byteData = await rootBundle.load("assets/images/bus.png");
+    return byteData.buffer.asUint8List();
+  }
+
+  void updateStopMarkers(Bus bus) async {
+    markerList.removeWhere((key, value) => key.contains("stop"));
+    Uint8List imageData = await getStopMarker();
+    bus.stops.forEach((key, value) {
+      GeoPoint point = value;
+      markerList["stop" + key] = Marker(
+          markerId: MarkerId(key),
+          position: LatLng(point.latitude, point.longitude),
+          zIndex: 2,
+          anchor: Offset(0.78, 0.78),
+          icon: BitmapDescriptor.fromBytes(imageData));
+    });
+  }
+
+  void listenForPindrops(Bus bus) {
+    markerList.removeWhere((key, value) => key.contains("pindrop"));
+    getPins(bus).listen((snapshot) {
+      markerList.removeWhere((key, value) => key.contains("pindrop"));
+      Map<String, dynamic> pins = snapshot.data();
+      pins.forEach((key, value) {
+        GeoPoint point = value;
+        markerList["pindrop" + key] = Marker(
+          markerId: MarkerId(key),
+          position: LatLng(point.latitude, point.longitude),
+          zIndex: 2,
+          anchor: Offset(0.78, 0.78),
+          icon: BitmapDescriptor.defaultMarker,
+        );
+        notifyListeners();
+      });
+    });
+    notifyListeners();
   }
 }

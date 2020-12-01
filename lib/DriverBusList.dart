@@ -8,7 +8,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'DBusNo1.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -64,8 +63,8 @@ class driverspeeddailState extends State<driverspeeddail>
               zoomGesturesEnabled: true,
               mapType: MapType.normal,
               initialCameraPosition: view.initialLocation,
-              markers: Set.of((view.marker != null) ? [view.marker] : []),
-              circles: Set.of((view.circle != null) ? [view.circle] : []),
+              markers: Set.of(view.markerList.values.toList() ?? []),
+              circles: Set.of(view.circleList ?? []),
               onMapCreated: view.onMapCreated,
             ),
             floatingActionButtonLocation:
