@@ -81,7 +81,8 @@ void updateDroppedPins(Bus bus, String uid, LocationData newLocalData) async {
   DocumentReference ref = FirebaseFirestore.instance
       .collection("buses/" + bus.docID + "/locationPool")
       .doc("droppedpins");
-  ref.set({uid: GeoPoint(newLocalData.latitude, newLocalData.longitude)});
+  ref.set({uid: GeoPoint(newLocalData.latitude, newLocalData.longitude)},
+      SetOptions(merge: true));
 }
 
 Stream getPins(Bus bus) {

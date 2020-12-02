@@ -1,10 +1,13 @@
 // edit need in pubsec.yaml,build,gradle,setting.gradle
 import 'package:busbay/logic/Services/data.dart';
+import 'package:busbay/logic/service_locator.dart';
+import 'package:busbay/logic/view_models/driver_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'DBusNo1.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,20 +20,10 @@ class driverspeeddail extends StatefulWidget {
 }
 
 class driverspeeddailState extends State<driverspeeddail>
-    with TickerProviderStateMixin , AutomaticKeepAliveClientMixin{
-  ScrollController scrollController;
-  bool dialVisible = true;
-  Bus _selectedBus;
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  DriverMapView mapView = serviceLocator<DriverMapView>();
 
-
-
-  void _showbus(Bus bus) {
-    setState(() {
-      _selectedBus = bus;
-    });
-  }
-
-  SpeedDialChild buildSpeedDialChild(Bus bus) {
+  SpeedDialChild buildSpeedDialChild(Bus bus, context) {
     return SpeedDialChild(
       child: Text(
         bus.id.toString(),
@@ -42,7 +35,7 @@ class driverspeeddailState extends State<driverspeeddail>
       ),
       backgroundColor: Colors.lightBlueAccent,
       onTap: () {
-        _showbus(bus);
+        Provider.of<DriverMapView>(context, listen: false).showbus(bus);
       },
       label: 'route ' + bus.id.toString(),
       labelStyle: TextStyle(fontWeight: FontWeight.w500),
@@ -53,30 +46,68 @@ class driverspeeddailState extends State<driverspeeddail>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-        body: Center(
-          child: DBus1(bus: _selectedBus),
-        ),
-        floatingActionButton: FutureBuilder(
-            future: getAllBus(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SpeedDial(
-                  animatedIcon: AnimatedIcons.menu_close,
-                  animatedIconTheme: IconThemeData(size: 22.0),
-                  // child: Icon(Icons.add),
-                  onOpen: () => print('OPENING DIAL'),
-                  onClose: () => print('DIAL CLOSED'),
-                  visible: dialVisible,
-                  curve: Curves.bounceIn,
-                  children: snapshot.data
-                      .map<SpeedDialChild>((bus) => buildSpeedDialChild(bus))
-                      .toList(),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            })
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DriverMapView>(create: (context) => mapView)
+      ],
+      child: Consumer<DriverMapView>(builder: (context, view, child) {
+        return Scaffold(
+          body: Scaffold(
+            appBar: AppBar(
+              title: Text(view.selectedBus?.name ?? "select a bus"),
+              backgroundColor: Colors.blue[700],
+            ),
+            body: GoogleMap(
+              scrollGesturesEnabled: true,
+              myLocationButtonEnabled: true,
+              zoomGesturesEnabled: true,
+              mapType: MapType.normal,
+              initialCameraPosition: view.initialLocation,
+              markers: Set.of(view.markerList.values.toList() ?? []),
+              circles: Set.of(view.circleList ?? []),
+              onMapCreated: view.onMapCreated,
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.startFloat,
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FloatingActionButton(
+                    child: Text("START"),
+                    heroTag: "FABstart",
+                    onPressed: () {
+                      view.getCurrentLocation();
+                    },
+                  ),
+                  FloatingActionButton(
+                      heroTag: "FABend",
+                      child: Text(
+                        "END",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'DancingScript',
+                        ),
+                      ),
+                      onPressed: () {
+                        view.locationSubscription.cancel();
+                      })
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            animatedIconTheme: IconThemeData(size: 22.0),
+            curve: Curves.bounceIn,
+            children: view.busList
+                .map<SpeedDialChild>((bus) => buildSpeedDialChild(bus, context))
+                .toList(),
+          ),
+        );
+      }),
     );
   }
 
