@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:intl/intl.dart';
 
 class DriverMapView extends ChangeNotifier {
   StreamSubscription locationSubscription;
@@ -20,6 +22,27 @@ class DriverMapView extends ChangeNotifier {
   List<Bus> busList = [];
   Bus selectedBus;
   Location _locationTracker;
+
+  String timeString,starttime,endtime;
+
+  final FirebaseMessaging _messaging = FirebaseMessaging();
+
+  void gettoken(){
+    _messaging.getToken().then((token){
+      print("deivice token is uder this");
+      print(token);
+      print("deivice token is above this");
+    });
+  }
+
+  String getTime() {
+    final String formattedDateTime =
+    DateFormat('yyyy-MM-dd \n kk:mm:ss').format(DateTime.now()).toString();
+      timeString = formattedDateTime;
+
+    return timeString;
+  }
+
 
   DriverMapView() {
     initialLocation =

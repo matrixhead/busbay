@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'logic/Services/data.dart';
 import 'logic/service_locator.dart';
 
+import 'package:flushbar/flushbar.dart';
+
 class passengerspeeddail extends StatefulWidget {
   @override
   passengerspeeddailState createState() => passengerspeeddailState();
@@ -16,6 +18,32 @@ class passengerspeeddail extends StatefulWidget {
 class passengerspeeddailState extends State<passengerspeeddail>
     with TickerProviderStateMixin,AutomaticKeepAliveClientMixin  {
   PassengerMapView mapView = serviceLocator<PassengerMapView>();
+
+  void _showflushbar() {
+    final flusbar =  new Flushbar(
+      title: "Bus No1",
+      message: "started at 8:30AM",
+      duration: Duration(seconds: 4),
+      flushbarPosition:FlushbarPosition.TOP,
+      backgroundColor: Colors.blueAccent,
+    )..show(context);
+  }
+
+
+ // final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
+ // _showsnackbar(){
+ //   final snackbar = new SnackBar(
+   //     content:new Text("demo snackbar"),
+     //   duration: new Duration (seconds: 4),
+     //   backgroundColor: Colors.blue,
+
+      //  action: new SnackBarAction(label: 'close', onPressed: (){
+       //   print("snackbar closed");}
+      //  ),
+  //  );
+
+  //  _scaffoldkey.currentState.showSnackBar(snackbar);
+
 
 
   SpeedDialChild buildSpeedDialChild(Bus bus, context) {
@@ -48,6 +76,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
       child: Consumer<PassengerMapView>(builder: (context, view, child) {
         return Scaffold(
           body: Scaffold(
+            //key:_scaffoldkey,
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
               backgroundColor: Colors.blue[700],
@@ -68,6 +97,8 @@ class passengerspeeddailState extends State<passengerspeeddail>
                 child: Icon(Icons.add_location),
                 onPressed: () {
                   view.dropPassengerMarker();
+                  //_showsnackbar();
+                  _showflushbar();
                 }),
           ),
           floatingActionButton: SpeedDial(
