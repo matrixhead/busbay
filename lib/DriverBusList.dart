@@ -79,6 +79,8 @@ class driverspeeddailState extends State<driverspeeddail>
                     heroTag: "FABstart",
                     onPressed: () {
                       view.getCurrentLocation();
+                      view.starttime=view.getTime();
+                      print(view.starttime);
                     },
                   ),
                   FloatingActionButton(
@@ -93,6 +95,8 @@ class driverspeeddailState extends State<driverspeeddail>
                       ),
                       onPressed: () {
                         view.locationSubscription.cancel();
+                        view.endtime=view.getTime();
+                        print(view.endtime);
                       })
                 ],
               ),
