@@ -13,11 +13,11 @@ class _usersListState extends State<usersList> {
   Widget build(BuildContext context) {
     final bb=Provider.of<List<Model>>(context);
    // print(bb.docs);
-    bb.forEach((element) {
+   /* bb.forEach((element) {
       print(element.name);
       print(element.email);
       print(element.department);
-    });
+    }); */
     return Container();
   }
 }

@@ -11,15 +11,11 @@ import 'package:rxdart/rxdart.dart';
 class AuthService extends ChangeNotifier {
   Observable<User> user;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
 
   AuthService() {
     user = Observable(_auth.authStateChanges());
   }
 
-  Future getCurrentUser()async {
-   return _auth.currentUser;
-  }
   Passs _passsFromFirebaseUser(User usr){
     return usr!=null ?Passs(uid: usr.uid) : null;
   }
@@ -35,18 +31,15 @@ class AuthService extends ChangeNotifier {
         email: email, password: password);
   }
 
-
-  Future updateUserName(String name, User currentUser) async {
-    await currentUser.updateProfile(displayName: name);
-    await currentUser.reload();
-  }
-
   Future<void> emailSignIn(String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   String getCurrentUserid() {
     return _auth.currentUser.uid;
+  }
+  Future<void> logOut() async {
+    return await _auth.signOut();
   }
 }
 
