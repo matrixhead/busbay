@@ -6,6 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'logic/Services/data.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'package:intl/intl.dart';
+
 class DBus1 extends StatefulWidget {
   final Bus bus;
   DBus1({Key key, this.bus}) : super(key: key);
@@ -20,6 +24,34 @@ class _DBus1State extends State<DBus1> {
   Marker marker;
   Circle circle;
   GoogleMapController _controller;
+
+  String _timeString,starttime,endtime;
+
+  final FirebaseMessaging _messaging = FirebaseMessaging();
+
+
+
+  void _gettoken(){
+    _messaging.getToken().then((token){
+      print("deivice token is uder this");
+      print(token);
+      print("deivice token is above this");
+    });
+  }
+
+
+
+
+  String _getTime() {
+    final String formattedDateTime =
+    DateFormat('yyyy-MM-dd \n kk:mm:ss').format(DateTime.now()).toString();
+    setState(() {
+      _timeString = formattedDateTime;
+
+
+    });
+    return _timeString;
+  }
 
   static final CameraPosition initialLocation = CameraPosition(
     target: LatLng(9.577142, 76.622592),
@@ -129,6 +161,9 @@ class _DBus1State extends State<DBus1> {
               heroTag: "FABstart",
               onPressed: () {
                 getCurrentLocation();
+                starttime=_getTime();
+                print(starttime);
+                _gettoken();
               },
             ),
             FloatingActionButton(
@@ -143,6 +178,8 @@ class _DBus1State extends State<DBus1> {
                 ),
                 onPressed: () {
                   _locationSubscription.cancel();
+                  endtime=_getTime();
+                  print(endtime);
                 })
           ],
         ),
