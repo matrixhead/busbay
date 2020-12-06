@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:busbay/logic/Services/auth.dart';
 import 'package:busbay/logic/Services/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +24,7 @@ class PassengerMapView extends ChangeNotifier {
   List<Bus> busList = [];
   Bus selectedBus;
   String currentUser;
+  StreamSubscription busLocation;
 
   PassengerMapView() {
     initialLocation =
@@ -83,6 +86,7 @@ class PassengerMapView extends ChangeNotifier {
   }
 
   void showbus(Bus bus) {
+    busLocation?.cancel();
     trackBus(bus);
     updateStopMarkers(bus);
     selectedBus = bus;
@@ -102,7 +106,7 @@ class PassengerMapView extends ChangeNotifier {
   Future<void> trackBus(Bus bus) async {
     if (bus != null) {
       Uint8List imageData = await getMarker();
-      getBusLoc(bus).listen((snapshot) {
+      busLocation = getBusLoc(bus).listen((snapshot) {
         GeoPoint point = snapshot.data()['points'];
         markerList["bus"] = Marker(
             markerId: MarkerId("bus"),
