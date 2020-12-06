@@ -78,21 +78,17 @@ class passengerspeeddailState extends State<passengerspeeddail>
               title: Text(view.selectedBus?.name ?? "select a bus"),
               backgroundColor: Colors.blue[700],
             ),
-            body: Stack(
-              children: [
-                GoogleMap(
-                  mapType: MapType.hybrid,
-                  scrollGesturesEnabled: true,
-                  myLocationButtonEnabled: true,
-                  zoomGesturesEnabled: true,
-                  onMapCreated: view.onMapCreated,
-                  initialCameraPosition: view.initialLocation,
-                  markers: Set.of(view.markerList.values.toList() ?? []),
-                  circles: Set.of(view.circleList ?? []),
-                ),
-                LinearProgressIndicator(),
-              ],
+            body: GoogleMap(
+              mapType: MapType.normal,
+              scrollGesturesEnabled: true,
+              myLocationButtonEnabled: true,
+              zoomGesturesEnabled: true,
+              onMapCreated: view.onMapCreated,
+              initialCameraPosition: view.initialLocation,
+              markers: Set.of(view.markerList.values.toList() ?? []),
+              circles: Set.of(view.circleList ?? []),
             ),
+
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: FloatingActionButton(
