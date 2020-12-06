@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:busbay/logic/Services/auth.dart';
 import 'package:busbay/logic/Services/data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,8 @@ import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:intl/intl.dart';
+
+import '../service_locator.dart';
 
 class DriverMapView extends ChangeNotifier {
   StreamSubscription locationSubscription;
@@ -23,12 +26,12 @@ class DriverMapView extends ChangeNotifier {
   Bus selectedBus;
   Location _locationTracker;
 
-  String timeString,starttime,endtime;
+  String timeString, starttime, endtime;
 
   final FirebaseMessaging _messaging = FirebaseMessaging();
 
-  void gettoken(){
-    _messaging.getToken().then((token){
+  void gettoken() {
+    _messaging.getToken().then((token) {
       print("deivice token is uder this");
       print(token);
       print("deivice token is above this");
@@ -37,12 +40,11 @@ class DriverMapView extends ChangeNotifier {
 
   String getTime() {
     final String formattedDateTime =
-    DateFormat('yyyy-MM-dd \n kk:mm:ss').format(DateTime.now()).toString();
-      timeString = formattedDateTime;
+        DateFormat('yyyy-MM-dd \n kk:mm:ss').format(DateTime.now()).toString();
+    timeString = formattedDateTime;
 
     return timeString;
   }
-
 
   DriverMapView() {
     initialLocation =
@@ -57,6 +59,7 @@ class DriverMapView extends ChangeNotifier {
 
   void loadBusData() async {
     busList = await getAllBus();
+    selectDefaultBus();
     notifyListeners();
   }
 
@@ -162,5 +165,15 @@ class DriverMapView extends ChangeNotifier {
       });
     });
     notifyListeners();
+  }
+
+  void selectDefaultBus() {
+    AuthService authService = serviceLocator<AuthService>();
+    String currentUser = authService.getCurrentUserid();
+    busList.forEach((element) {
+      if (currentUser == element.driver) {
+        showbus(element);
+      }
+    });
   }
 }

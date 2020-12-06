@@ -79,7 +79,7 @@ class driverspeeddailState extends State<driverspeeddail>
                     heroTag: "FABstart",
                     onPressed: () {
                       view.getCurrentLocation();
-                      view.starttime=view.getTime();
+                      view.starttime = view.getTime();
                       print(view.starttime);
                     },
                   ),
@@ -95,7 +95,7 @@ class driverspeeddailState extends State<driverspeeddail>
                       ),
                       onPressed: () {
                         view.locationSubscription.cancel();
-                        view.endtime=view.getTime();
+                        view.endtime = view.getTime();
                         print(view.endtime);
                       })
                 ],

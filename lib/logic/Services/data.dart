@@ -18,15 +18,13 @@ class Bus {
   final int id;
   final String name;
   final String docID;
-  final Map<String, dynamic> status;
-  final DocumentReference driver;
+  final String driver;
   final Map<String, dynamic> stops;
 
   Bus.fromSnapShot(DocumentSnapshot snapshot)
       : docID = snapshot.id,
         id = snapshot.data()['id'],
         name = snapshot.data()['name'],
-        status = snapshot.data()['status'],
         driver = snapshot.data()['driver'],
         stops = snapshot.data()['stops'];
 }
