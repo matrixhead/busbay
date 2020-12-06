@@ -16,32 +16,35 @@ class passengerspeeddail extends StatefulWidget {
 }
 
 class passengerspeeddailState extends State<passengerspeeddail>
-    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with TickerProviderStateMixin,AutomaticKeepAliveClientMixin  {
   PassengerMapView mapView = serviceLocator<PassengerMapView>();
 
   void _showflushbar() {
-    final flusbar = new Flushbar(
+    final flusbar =  new Flushbar(
       title: "Bus No1",
       message: "started at 8:30AM",
       duration: Duration(seconds: 4),
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition:FlushbarPosition.TOP,
       backgroundColor: Colors.blueAccent,
     )..show(context);
   }
 
-  // final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
-  // _showsnackbar(){
-  //   final snackbar = new SnackBar(
-  //     content:new Text("demo snackbar"),
-  //   duration: new Duration (seconds: 4),
-  //   backgroundColor: Colors.blue,
 
-  //  action: new SnackBarAction(label: 'close', onPressed: (){
-  //   print("snackbar closed");}
-  //  ),
+ // final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
+ // _showsnackbar(){
+ //   final snackbar = new SnackBar(
+   //     content:new Text("demo snackbar"),
+     //   duration: new Duration (seconds: 4),
+     //   backgroundColor: Colors.blue,
+
+      //  action: new SnackBarAction(label: 'close', onPressed: (){
+       //   print("snackbar closed");}
+      //  ),
   //  );
 
   //  _scaffoldkey.currentState.showSnackBar(snackbar);
+
+
 
   SpeedDialChild buildSpeedDialChild(Bus bus, context) {
     return SpeedDialChild(

@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 class AuthService extends ChangeNotifier {
   Observable<User> user;
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   AuthService() {
@@ -23,9 +24,7 @@ class AuthService extends ChangeNotifier {
     return _auth.onAuthStateChanged
     .map(_passsFromFirebaseUser);
   }
-  Future<String> getCurrentUID() async {
-    return (await _auth.currentUser).uid;
-  }
+
   Future<UserCredential> emailSignUp(String email, String password) async {
     return _auth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -40,6 +39,25 @@ class AuthService extends ChangeNotifier {
   }
   Future<void> logOut() async {
     return await _auth.signOut();
+  }
+  Future<bool> validatePassword(String password) async {
+    var firebaseUser = await _auth.currentUser;
+
+    var authCredentials = EmailAuthProvider.getCredential(
+        email: firebaseUser.email, password: password);
+    try {
+      var authResult = await firebaseUser
+          .reauthenticateWithCredential(authCredentials);
+      return authResult.user != null;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<void> updatePassword(String password) async {
+    var firebaseUser = await _auth.currentUser;
+    firebaseUser.updatePassword(password);
   }
 }
 

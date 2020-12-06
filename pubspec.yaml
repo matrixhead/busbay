@@ -37,8 +37,9 @@ dependencies:
   google_sign_in: 4.5.4
   rxdart: 0.20.0
   provider: ^4.3.2+2
-  get_it: ^5.0.1
+  get_it: ^4.0.1
   font_awesome_flutter: ^8.10.0
+  percent_indicator: ^2.1.8
   flutter_icons: ^1.1.0
   flushbar: ^1.10.4
   firebase_messaging:
@@ -83,11 +84,11 @@ flutter:
 
     - family: Courgette
       fonts:
-        - asset: assets/fo/Courgette-Regular.ttf
+        - asset: assets/fo/NerkoOne-Regular.ttf
 
     - family: PermMarker
       fonts:
-        - asset: assets/fo/PermanentMarker-Regular.ttf
+        - asset: assets/fo/DoHyeon-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

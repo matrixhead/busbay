@@ -55,7 +55,7 @@ class _BNavState extends State<BNav> {
               Icons.account_circle_rounded
             ),
             label: "profile",
-            backgroundColor:  Color(0xFF040021),
+            backgroundColor: Colors.blueAccent,
           ),
           BottomNavigationBarItem(
             icon: Icon(

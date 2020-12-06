@@ -36,6 +36,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .size
         .height;
     final user = Provider.of<Passs>(context);
+    if(user==null){
+      return Center(child: CircularProgressIndicator());
+    }
     return StreamBuilder<UserData>(
       stream:UserService(uid: user.uid).userData,
       builder: (context, snapshot) {
@@ -48,8 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(4, 9, 35, 1),
                   Color.fromRGBO(39, 105, 171, 1),
+                  Color.fromRGBO(255, 255, 255, 1),
                 ],
                 begin: FractionalOffset.bottomCenter,
                 end: FractionalOffset.topCenter,
@@ -75,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           child: Icon(
                             AntDesign.arrowleft,
-                            color: Colors.white,
+                            color: Colors.red,
                           ),
                         ),
                         GestureDetector(
@@ -86,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           child: Icon(
                             AntDesign.logout,
-                            color: Colors.white,
+                            color: Colors.red,
                           ),
                         ),
                       ],
@@ -98,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'My\nProfile',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.blue,
                         fontSize: 34,
                         fontFamily: 'NiseBuschGardens',
                       ),
@@ -124,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: innerWidth,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
-                                    color: Colors.white,
+                                    color: Color(0xFF212121),
                                   ),
                                   child: Column(
                                     children: [
@@ -134,12 +137,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       Text(
                                         userData.name ?? 'Nill',
-                                       // 'Driver Name',
-
                                         style: TextStyle(
                                           color: Color.fromRGBO(39, 105, 171, 1),
                                           fontFamily: 'Courgette',
-                                          fontSize: 37,
+                                          fontSize: 35,
                                         ),
                                       ),
                                       SizedBox(

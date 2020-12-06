@@ -17,11 +17,12 @@ class ProfileScreen extends StatefulWidget {
   ProScreen createState() => ProScreen();
 }
 class ProScreen extends State {
-  final AuthService _auth= AuthService();
+  FirebaseAuth auth=FirebaseAuth.instance;
+  Future<void>logOut() async{
+    User user= auth.signOut() as FirebaseUser;
+  }
   final Model travel;
   ProScreen({this.travel});
-
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery
@@ -33,6 +34,9 @@ class ProScreen extends State {
         .size
         .height;
     final user = Provider.of<Passs>(context);
+    if(user==null){
+      return Center(child: CircularProgressIndicator());
+    }
     return StreamProvider<List<Model>>.value(
       value: UserService().pass,
       child: StreamBuilder<UserData>(
@@ -47,8 +51,8 @@ class ProScreen extends State {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color.fromRGBO(4, 9, 35, 1),
                         Color.fromRGBO(39, 105, 171, 1),
+                        Color.fromRGBO(255, 255, 255, 1),
                       ],
                       begin: FractionalOffset.bottomCenter,
                       end: FractionalOffset.topCenter,
@@ -75,18 +79,18 @@ class ProScreen extends State {
                                   },
                                   child: Icon(
                                     AntDesign.arrowleft,
-                                    color: Colors.white,
+                                    color: Colors.red,
                                   ),
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    _auth.logOut();
+                                    logOut();
                                     Navigator.pushReplacement(context, MaterialPageRoute(
                                         builder: (BuildContext context) => App()));
                                   },
                                   child: Icon(
                                     AntDesign.logout,
-                                    color: Colors.white,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ],
@@ -98,7 +102,7 @@ class ProScreen extends State {
                               'My\nProfile',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.blue,
                                 fontSize: 34,
                                 fontFamily: 'NiseBuschGardens',
                               ),
@@ -125,21 +129,19 @@ class ProScreen extends State {
                                           width: innerWidth,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(30),
-                                            color: Colors.white,
+                                            color: Color(0xFF212121),
                                           ),
                                           child: Column(
                                             children: [
                                               SizedBox(
                                                 height: 80,
                                               ),
-                                           //   usersList(),
-                                             //     Wrapper(),
                                                   Text(
                                                       userData.name,
                                               style: TextStyle(
                                                 color: Color.fromRGBO(39, 105, 171, 1),
                                                 fontFamily: 'Courgette',
-                                                fontSize: 37,
+                                                fontSize: 35,
                                               ),
                                             ),
                                               SizedBox(
@@ -155,7 +157,7 @@ class ProScreen extends State {
                                                         userData.email,
                                                         //'Department',
                                                         style: TextStyle(
-                                                          color: Colors.grey[700],
+                                                          color: Colors.white,
                                                           fontFamily: 'Montserrat',
                                                           fontSize: 18,
                                                         ),
@@ -229,7 +231,8 @@ class ProScreen extends State {
                                         right: 0,
                                         child: Center(
                                           child: Container(
-                                            child: Image.asset(
+                                            child:
+                                            Image.asset(
                                               'assets/icons/b.png',
                                               width: innerWidth * 0.45,
                                               fit: BoxFit.fitWidth,
@@ -254,7 +257,8 @@ class ProScreen extends State {
               ],
             );
           }else{
-            return CircularProgressIndicator();
+
+              return CircularProgressIndicator();
           }
 
         }

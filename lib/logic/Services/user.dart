@@ -1,11 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:busbay/logic/Services/Model.dart';
 import 'package:busbay/logic/Services/userData.dart';
+import 'package:busbay/logic/service_locator.dart';
+import 'auth.dart';
+
 
 class UserService{
+  AuthService _authService = serviceLocator.get<AuthService>();
 
   final String uid;
   UserService({this.uid});
+
+
+
 
   final CollectionReference userCollection = FirebaseFirestore.instance.collection('users');
 
@@ -42,5 +49,12 @@ class UserService{
   Stream<UserData> get userData{
     return userCollection.document(uid).snapshots()
     .map(_userDataFromSnapshot);
+  }
+  Future<bool> validateCurrentPassword(String password) async {
+    return await _authService.validatePassword(password);
+  }
+
+  void updateUserPassword(String password) {
+    _authService.updatePassword(password);
   }
 }

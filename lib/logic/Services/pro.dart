@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'userData.dart';
 import 'package:busbay/main.dart';
+import 'package:busbay/Passenger/profile.dart';
 
 class Wrapper extends StatelessWidget {
   @override
@@ -10,6 +11,6 @@ class Wrapper extends StatelessWidget {
 
     final user = Provider.of<Passs>(context);
     print(user);
-    return ProfileScreen();
+    return Container();
   }
 }

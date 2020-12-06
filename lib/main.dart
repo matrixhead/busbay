@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           body: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
+                colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
                 image: AssetImage("assets/icons/e.jpg"),
                 fit: BoxFit.cover,
               ),
@@ -126,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
     switch (_pageState) {
       case 0:
         //_backgroundColor = Colors.deepPurpleAccent;
-        _headingColor = Colors.white70;
+        _headingColor = Colors.black87;
 
         _headingTop = 100;
 
@@ -198,8 +200,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "bus Bay",
                             style: TextStyle(
-                                color: Color(0xFFF44336),
-                                fontSize: 40,
+                                color: Color(0xFFf44336),
+                                fontSize: 46,
                                 fontFamily: 'PermMarker'),
                           ),
                         ),
@@ -210,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                             "RIT KOTTAYAM",
                             textAlign: TextAlign.center,
                             style:
-                                TextStyle(color: _headingColor, fontSize: 10),
+                                TextStyle(color: _headingColor, fontSize: 12),
                           ),
                         )
                       ],
@@ -233,7 +235,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.all(20),
                             child: CircularProgressIndicator(
                               strokeWidth: 1.0,
-                              // backgroundColor: _backgroundColor,
+                           // backgroundColor: Colors.amberAccent ,
                             ));
                       } else {
                         return Container(
@@ -252,13 +254,14 @@ class _LoginPageState extends State<LoginPage> {
                               padding: EdgeInsets.all(20),
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                  color: Color(0xFFFF1744),
+                                  //color: Color(0xFFFF1744),
+                                  color: Color(0xFF304FFE),
                                   borderRadius: BorderRadius.circular(50)),
                               child: Center(
                                 child: Text(
                                   "track Bus",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
+                                      color: Colors.white70, fontSize: 16),
                                 ),
                               ),
                             ),
@@ -288,7 +291,8 @@ class _LoginPageState extends State<LoginPage> {
                     margin: EdgeInsets.only(bottom: 20),
                     child: Text(
                       "Login To Continue",
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15,
+                      color: Colors.black87),
                     ),
                   ),
                   InputWithIcon(
@@ -449,7 +453,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Color(0xFFCE5F5F), borderRadius: BorderRadius.circular(50)),
+          color: Color(0xFF304FFE), borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(20),
       child: Center(
         child: Text(

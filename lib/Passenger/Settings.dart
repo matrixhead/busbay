@@ -10,7 +10,8 @@ import 'package:busbay/logic/Services/userData.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:busbay/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:busbay/logic/Services/auth.dart';
+import 'package:busbay/logic/Services/ChangePassword.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 class SettingsPassenger extends StatefulWidget {
   @override
@@ -18,21 +19,58 @@ class SettingsPassenger extends StatefulWidget {
 }
 
 class _SettingsPassengerState extends State<SettingsPassenger> {
+  bool _keyboardVisible = false;
+  double windowWidth = 0;
+  double windowHeight = 0;
+  double _loginYOffset = 0;
+  double _loginXOffset = 0;
   bool _dark;
 
   @override
   void initState() {
     super.initState();
     _dark = false;
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        setState(() {
+          _keyboardVisible = visible;
+          print("Keyboard State Changed : $visible");
+        });
+      },
+    );
   }
-
   Brightness _getBrightness() {
     return _dark ? Brightness.dark : Brightness.light;
   }
 
   @override
   Widget build(BuildContext context) {
+    windowHeight = MediaQuery.of(context).size.height;
+    windowWidth = MediaQuery.of(context).size.width;
+    _loginYOffset = _keyboardVisible ? 40 : 20;
+    _loginXOffset = 0;
+    void _showChangePassword() {
+      showModalBottomSheet(isScrollControlled: true,context: context, builder: (context) {
+        return AnimatedContainer(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+          width: windowWidth,
+         // height: windowHeight,
+          height: _keyboardVisible ? windowHeight : windowHeight-350 ,
+          curve: Curves.fastLinearToSlowEaseIn,
+          duration: Duration(milliseconds: 1000),
+          transform: Matrix4.translationValues(_loginXOffset, _loginYOffset, 1),
+          decoration: BoxDecoration(
+              color: Colors.white.withOpacity(1),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25), topRight: Radius.circular(25))),
+          child: SettingsForm(),
+        );
+      });
+    }
     final user = Provider.of<Passs>(context);
+    if(user==null){
+      return Center(child: CircularProgressIndicator());
+    }
     return StreamBuilder<UserData>(
       stream: UserService(uid: user.uid).userData,
       builder: (context, snapshot) {
@@ -68,6 +106,18 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
               body: Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(39, 105, 171, 1),
+                          Color.fromRGBO(255, 255, 255, 1),
+                        ],
+                        begin: FractionalOffset.bottomCenter,
+                        end: FractionalOffset.topCenter,
+                      ),
+                    ),
+                  ),
                   SingleChildScrollView(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -77,7 +127,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                           elevation: 8.0,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
-                          color: Colors.purple,
+                          color: Colors.redAccent,
                           child: ListTile(
                             onTap: () {
                               //open edit profile
@@ -86,17 +136,13 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                               userData.name,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                             leading: CircleAvatar(
-                              //backgroundImage: NetworkImage(avatars[0]),
-                              backgroundImage: AssetImage("assets/icons/e.jpg"),
+                              child: Text(userData.name[0])
                             ),
-                            trailing: Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
+
                           ),
                         ),
                         const SizedBox(height: 10.0),
@@ -114,9 +160,9 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                                 ),
                                 title: Text("Change Password"),
                                 trailing: Icon(Icons.keyboard_arrow_right),
-                                onTap: () {
-                                  //open change password
-                                },
+                                onTap: () => _showChangePassword(),
+                                  //{
+                                  //open change password},
                               ),
                               _buildDivider(),
                               ListTile(
@@ -160,13 +206,6 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                           value: true,
                           title: Text("Received notification"),
                           onChanged: (val) {},
-                        ),
-                        SwitchListTile(
-                          activeColor: Colors.purple,
-                          contentPadding: const EdgeInsets.all(0),
-                          value: false,
-                          title: Text("Received newsletter"),
-                          onChanged: null,
                         ),
                         SwitchListTile(
                           activeColor: Colors.purple,
