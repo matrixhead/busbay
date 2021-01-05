@@ -51,8 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(39, 105, 171, 1),
-                  Color.fromRGBO(255, 255, 255, 1),
+                  Color(0xFF3D550C),
+                  Color(0xFFECF87F),
                 ],
                 begin: FractionalOffset.bottomCenter,
                 end: FractionalOffset.topCenter,

@@ -10,6 +10,8 @@ import 'logic/service_locator.dart';
 
 import 'package:flushbar/flushbar.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 class passengerspeeddail extends StatefulWidget {
   @override
   passengerspeeddailState createState() => passengerspeeddailState();
@@ -19,8 +21,20 @@ class passengerspeeddailState extends State<passengerspeeddail>
     with TickerProviderStateMixin,AutomaticKeepAliveClientMixin  {
   PassengerMapView mapView = serviceLocator<PassengerMapView>();
 
+
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+  void fcmSubscribe() {
+    firebaseMessaging.subscribeToTopic('Passenger');
+    firebaseMessaging.subscribeToTopic('Passenger1');
+  }
+
+  void fcmUnSubscribe() {
+    firebaseMessaging.unsubscribeFromTopic('Passenger');
+  }
+
   void _showflushbar() {
-    final flusbar =  new Flushbar(
+     Flushbar(
       title: "Bus No1",
       message: "started at 8:30AM",
       duration: Duration(seconds: 4),
@@ -66,6 +80,13 @@ class passengerspeeddailState extends State<passengerspeeddail>
     );
   }
 
+
+ // void initState() {
+  //  super.initState();
+   // _showflushbar();
+  //  WidgetsBinding.instance.addPostFrameCallback((_) => _showflushbar());
+//  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -91,15 +112,16 @@ class passengerspeeddailState extends State<passengerspeeddail>
               markers: Set.of(view.markerList.values.toList() ?? []),
               circles: Set.of(view.circleList ?? []),
             ),
-
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add_location),
                 onPressed: () {
                   view.dropPassengerMarker();
-                  //_showsnackbar();
-                  _showflushbar();
+                  //_showflushbar();
+
+                  fcmSubscribe();
+
                 }),
           ),
           floatingActionButton: SpeedDial(

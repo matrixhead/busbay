@@ -43,13 +43,13 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
          resizeToAvoidBottomInset: false,
           body: Container(
-            decoration: BoxDecoration(
+           /* decoration: BoxDecoration(
               image: DecorationImage(
                 colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.dstATop),
                 image: AssetImage("assets/icons/e.jpg"),
                 fit: BoxFit.cover,
               ),
-            ),
+            ),*/
             child: LoginPage(),
           ),
        ),
@@ -198,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                             top: _headingTop,
                           ),
                           child: Text(
-                            "bus Bay",
+                            "",
                             style: TextStyle(
                                 color: Color(0xFFf44336),
                                 fontSize: 46,
@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                           margin: EdgeInsets.all(20),
                           padding: EdgeInsets.symmetric(horizontal: 32),
                           child: Text(
-                            "RIT KOTTAYAM",
+                            "",
                             textAlign: TextAlign.center,
                             style:
                                 TextStyle(color: _headingColor, fontSize: 12),
@@ -219,12 +219,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                /*  Container(
-                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  Container(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
                   child: Center(
-                    child: Image.asset("assets/icons/b.png"),
+                    child: Image.asset("assets/icons/bb.png"),
                   ),
-                ), */
+                ),
                 StreamBuilder(
                     stream: Provider.of<MainViewModel>(context, listen: false)
                         .loading,
@@ -255,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   //color: Color(0xFFFF1744),
-                                  color: Color(0xFF304FFE),
+                                  color: Color(0xFF59981A),
                                   borderRadius: BorderRadius.circular(50)),
                               child: Center(
                                 child: Text(

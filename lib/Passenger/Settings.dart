@@ -18,7 +18,7 @@ class SettingsPassenger extends StatefulWidget {
   _SettingsPassengerState createState() => _SettingsPassengerState();
 }
 
-class _SettingsPassengerState extends State<SettingsPassenger> {
+class _SettingsPassengerState extends State<SettingsPassenger> with  AutomaticKeepAliveClientMixin {
   bool _keyboardVisible = false;
   double windowWidth = 0;
   double windowHeight = 0;
@@ -71,6 +71,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
     if(user==null){
       return Center(child: CircularProgressIndicator());
     }
+    super.build(context);
     return StreamBuilder<UserData>(
       stream: UserService(uid: user.uid).userData,
       builder: (context, snapshot) {
@@ -273,4 +274,5 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
       color: Colors.grey.shade400,
     );
   }
+  bool get wantKeepAlive => true;
 }

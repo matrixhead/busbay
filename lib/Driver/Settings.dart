@@ -15,7 +15,7 @@ class SettingsPassenger extends StatefulWidget {
   _SettingsPassengerState createState() => _SettingsPassengerState();
 }
 
-class _SettingsPassengerState extends State<SettingsPassenger> {
+class _SettingsPassengerState extends State<SettingsPassenger> with AutomaticKeepAliveClientMixin  {
   bool _keyboardVisible = false;
   double windowWidth = 0;
   double windowHeight = 0;
@@ -68,6 +68,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
     if(user==null){
       return Center(child: CircularProgressIndicator());
     }
+    super.build(context);
     return StreamBuilder<UserData>(
         stream: UserService(uid: user.uid).userData,
         builder: (context, snapshot) {
@@ -81,10 +82,11 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
               child: Scaffold(
                 backgroundColor: _dark ? null : Colors.grey.shade200,
                 appBar: AppBar(
+
                   elevation: 0,
                   brightness: _getBrightness(),
                   iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
-                  backgroundColor: Colors.transparent,
+                  backgroundColor:Color(0xFFECF87F),
                   title: Text(
                     'Settings',
                     style: TextStyle(color: _dark ? Colors.white : Colors.black),
@@ -107,8 +109,9 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Color.fromRGBO(39, 105, 171, 1),
-                            Color.fromRGBO(255, 255, 255, 1),
+
+                            Color(0xFF3D550C),
+                            Color(0xFFECF87F)
                           ],
                           begin: FractionalOffset.bottomCenter,
                           end: FractionalOffset.topCenter,
@@ -124,7 +127,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                             elevation: 8.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)),
-                            color: Colors.redAccent,
+                            color: Color(0xFFECF87F),
                             child: ListTile(
                               onTap: () {
                                 //open edit profile
@@ -137,7 +140,8 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                                 ),
                               ),
                               leading: CircleAvatar(
-                                  child: Text(userData.name[0])
+                                  child: Text(userData.name[0]),
+                                backgroundColor: Color(0xFF3D550C),
                               ),
 
                             ),
@@ -153,7 +157,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                                 ListTile(
                                   leading: Icon(
                                     Icons.lock_outline,
-                                    color: Colors.purple,
+                                    color: Color(0xFF59981A),
                                   ),
                                   title: Text("Change Password"),
                                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -165,7 +169,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                                 ListTile(
                                   leading: Icon(
                                     FontAwesomeIcons.language,
-                                    color: Colors.purple,
+                                    color: Color(0xFF59981A),
                                   ),
                                   title: Text("Change Language"),
                                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -177,7 +181,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                                 ListTile(
                                   leading: Icon(
                                     Icons.location_on,
-                                    color: Colors.purple,
+                                    color: Color(0xFF59981A),
                                   ),
                                   title: Text("Change Location"),
                                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -194,25 +198,25 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
-                              color: Colors.indigo,
+                              color: Color(0xFF3D550C),
                             ),
                           ),
                           SwitchListTile(
-                            activeColor: Colors.purple,
+                            activeColor: Color(0xFF59981A),
                             contentPadding: const EdgeInsets.all(0),
                             value: true,
                             title: Text("Received notification"),
                             onChanged: (val) {},
                           ),
                           SwitchListTile(
-                            activeColor: Colors.black,
+                            activeColor: Color(0xFF59981A),
                             contentPadding: const EdgeInsets.all(0),
                             value: true,
                             title: Text("Received Offer Notification"),
                             onChanged: (val) {},
                           ),
                           SwitchListTile(
-                            activeColor: Colors.black,
+                            activeColor: Color(0xFF59981A),
                             contentPadding: const EdgeInsets.all(0),
                             value: true,
                             title: Text("Received App Updates"),
@@ -267,7 +271,8 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
       ),
       width: double.infinity,
       height: 1.0,
-      color: Colors.grey.shade400,
+      color:Color(0xFF59981A),
     );
   }
+  bool get wantKeepAlive => true;
 }

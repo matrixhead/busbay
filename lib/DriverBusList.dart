@@ -33,7 +33,7 @@ class driverspeeddailState extends State<driverspeeddail>
           fontSize: 25,
         ),
       ),
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Color(0xFF81B622),
       onTap: () {
         Provider.of<DriverMapView>(context, listen: false).showbus(bus);
       },
@@ -55,7 +55,8 @@ class driverspeeddailState extends State<driverspeeddail>
           body: Scaffold(
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
-              backgroundColor: Colors.blue[700],
+              backgroundColor: Color(0xFF59981A),
+
             ),
             body: GoogleMap(
               scrollGesturesEnabled: true,
@@ -76,6 +77,8 @@ class driverspeeddailState extends State<driverspeeddail>
                 children: <Widget>[
                   FloatingActionButton(
                     child: Text("START"),
+
+                    backgroundColor:Color(0xFF59981A) ,
                     heroTag: "FABstart",
                     onPressed: () {
                       view.getCurrentLocation();
@@ -85,6 +88,7 @@ class driverspeeddailState extends State<driverspeeddail>
                   ),
                   FloatingActionButton(
                       heroTag: "FABend",
+                    backgroundColor:Color(0xFF59981A),
                       child: Text(
                         "END",
                         style: TextStyle(
@@ -103,6 +107,8 @@ class driverspeeddailState extends State<driverspeeddail>
             ),
           ),
           floatingActionButton: SpeedDial(
+            backgroundColor: Color(0xFF3D550C),
+            marginRight: 50,
             animatedIcon: AnimatedIcons.menu_close,
             animatedIconTheme: IconThemeData(size: 22.0),
             curve: Curves.bounceIn,
