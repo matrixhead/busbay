@@ -86,6 +86,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
               scrollGesturesEnabled: true,
               myLocationButtonEnabled: true,
               zoomGesturesEnabled: true,
+              zoomControlsEnabled: true,
               onMapCreated: view.onMapCreated,
               initialCameraPosition: view.initialLocation,
               markers: Set.of(view.markerList.values.toList() ?? []),
