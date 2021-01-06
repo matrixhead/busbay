@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:busbay/logic/Services/auth.dart';
+import 'package:busbay/logic/Services/data.dart';
 import 'package:busbay/logic/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class MainViewModel extends ChangeNotifier {
   PublishSubject<String> status = PublishSubject();
@@ -20,9 +22,18 @@ class MainViewModel extends ChangeNotifier {
     loading.add(true);
     try {
       await authService.emailSignIn(email, password);
+      subscribeToNotification();
     } on FirebaseAuthException catch (e) {
       status.add(e.code);
       loading.add(false);
     }
+  }
+
+  void subscribeToNotification() async {
+    String uid = authService.getCurrentUserid();
+    String route = await getUserRoute(uid);
+    print(route);
+    FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+    firebaseMessaging.subscribeToTopic(route);
   }
 }

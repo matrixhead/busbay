@@ -90,3 +90,12 @@ Stream getPins(Bus bus) {
     return ref.doc("droppedpins").snapshots();
   }
 }
+
+Future<String> getUserRoute(uid) async {
+  String route = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value) => value.data()['route']);
+  return route;
+}
