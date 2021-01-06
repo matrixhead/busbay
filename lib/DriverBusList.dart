@@ -62,6 +62,7 @@ class driverspeeddailState extends State<driverspeeddail>
               scrollGesturesEnabled: true,
               myLocationButtonEnabled: true,
               zoomGesturesEnabled: true,
+              zoomControlsEnabled: true,
               mapType: MapType.normal,
               initialCameraPosition: view.initialLocation,
               markers: Set.of(view.markerList.values.toList() ?? []),

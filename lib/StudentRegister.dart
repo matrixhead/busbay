@@ -32,6 +32,8 @@ class StudentRegi extends StatefulWidget {
 }
 
 class _StudentRegiState extends State<StudentRegi> {
+  var newPasswordController = TextEditingController();
+  var repeatPasswordController = TextEditingController();
   StudentRegisterView studentRegisterView =
       serviceLocator<StudentRegisterView>();
 
@@ -389,6 +391,7 @@ class _StudentRegiState extends State<StudentRegi> {
   }
 
   Widget _buildPasswordTF(context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -435,6 +438,7 @@ class _StudentRegiState extends State<StudentRegi> {
                   fontFamily: 'OpenSans',
                 ),
               ),
+              controller: newPasswordController,
               validator: (val) {
                 String validation =
                     Provider.of<StudentRegisterView>(context, listen: false)
@@ -447,6 +451,68 @@ class _StudentRegiState extends State<StudentRegi> {
               onChanged: (val) =>
                   Provider.of<StudentRegisterView>(context, listen: false)
                       .password = val),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConfirmPasswordTF(context) {
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Confirm Password',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'OpenSans',
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+            //color: Color(0xFF6200EA),
+            color: Colors.blueGrey,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 6.0,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 60.0,
+          child: TextFormField(
+              obscureText: true,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'OpenSans',
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 14.0),
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.white,
+                ),
+                hintText: 'Reneter Your Password',
+                hintStyle: TextStyle(
+                  color: Colors.white54,
+                  fontFamily: 'OpenSans',
+                ),
+              ),
+               controller:repeatPasswordController,
+              validator: (value) {
+                return newPasswordController.text == value
+                    ? null
+                    : "Give same as New Password";
+              },
+              onChanged: (val) =>
+              Provider.of<StudentRegisterView>(context, listen: false)
+                  .password = val),
         ),
       ],
     );
@@ -603,7 +669,11 @@ class _StudentRegiState extends State<StudentRegi> {
                       _buildEmailTF(context),
                       SizedBox(height: 20.0),
                       _buildPasswordTF(context),
+                      SizedBox(height: 20.0),
+                      _buildConfirmPasswordTF(context),
+                      SizedBox(height: 20.0),
                       _buildSignUpBtn(context),
+                      SizedBox(height: 20.0),
                       _buildLoginBtn(),
                     ],
                   );
