@@ -4,6 +4,7 @@ import 'package:busbay/logic/view_models/main_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/rendering.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -338,6 +339,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: PrimaryButton(
                           btnText: "Login",
+
+
                         ));
                   }),
                   SizedBox(
@@ -453,7 +456,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Color(0xFF304FFE), borderRadius: BorderRadius.circular(50)),
+          color: Color(0xFF81B622), borderRadius: BorderRadius.circular(50)),
       padding: EdgeInsets.all(20),
       child: Center(
         child: Text(

@@ -86,7 +86,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> with AutomaticKee
                   elevation: 0,
                   brightness: _getBrightness(),
                   iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
-                  backgroundColor:Color(0xFFECF87F),
+                  backgroundColor:Color(0xFFD5CE58),
                   title: Text(
                     'Settings',
                     style: TextStyle(color: _dark ? Colors.white : Colors.black),
@@ -109,9 +109,11 @@ class _SettingsPassengerState extends State<SettingsPassenger> with AutomaticKee
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
+                            Color(0xFF719F1E),
+                            Color(0xFFD5CE58),
 
-                            Color(0xFF3D550C),
-                            Color(0xFFECF87F)
+
+
                           ],
                           begin: FractionalOffset.bottomCenter,
                           end: FractionalOffset.topCenter,
@@ -135,12 +137,12 @@ class _SettingsPassengerState extends State<SettingsPassenger> with AutomaticKee
                               title: Text(
                                 userData.name,
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w800,
                                 ),
                               ),
                               leading: CircleAvatar(
-                                  child: Text(userData.name[0]),
+                                child: Text(userData.name[0]),
                                 backgroundColor: Color(0xFF3D550C),
                               ),
 

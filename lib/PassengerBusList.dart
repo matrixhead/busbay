@@ -64,13 +64,16 @@ class passengerspeeddailState extends State<passengerspeeddail>
     return SpeedDialChild(
       child: Text(
         bus.id.toString(),
+
         textAlign: TextAlign.center,
+
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
+
       ),
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor:Color(0xFF81B622),
       onTap: () {
         Provider.of<PassengerMapView>(context, listen: false).showbus(bus);
       },
@@ -100,7 +103,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
             //key:_scaffoldkey,
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
-              backgroundColor: Colors.blue[700],
+              backgroundColor:   Color(0xFF719F1E),
             ),
             body: GoogleMap(
               mapType: MapType.normal,
@@ -117,6 +120,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add_location),
+                backgroundColor:Color(0xFF59981A) ,
                 onPressed: () {
                   view.dropPassengerMarker();
                   //_showflushbar();
@@ -126,6 +130,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
                 }),
           ),
           floatingActionButton: SpeedDial(
+            backgroundColor: Color(0xFF3D550C),
             animatedIcon: AnimatedIcons.menu_close,
             animatedIconTheme: IconThemeData(size: 22.0),
             curve: Curves.bounceIn,

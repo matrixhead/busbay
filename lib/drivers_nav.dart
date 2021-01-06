@@ -46,7 +46,7 @@ class _BNavState extends State<BNav> {
               Icons.directions_bus,
               
             ),
-            backgroundColor: Color(0xFF81B622),
+            backgroundColor:   Color(0xFF719F1E),
             label: "BUS",
             
           ),
@@ -55,14 +55,14 @@ class _BNavState extends State<BNav> {
               Icons.account_circle_rounded
             ),
             label: "profile",
-            backgroundColor: Color(0xFF81B622),
+            backgroundColor:   Color(0xFF719F1E),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
             ),
             label: "settings",
-            backgroundColor: Color(0xFF81B622),
+            backgroundColor:   Color(0xFF719F1E),
           ),
         ],
         currentIndex: _selectedIndex,

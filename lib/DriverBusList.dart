@@ -72,9 +72,9 @@ class driverspeeddailState extends State<driverspeeddail>
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: Padding(
-              padding: const EdgeInsets.all(0.0),
+              padding: const EdgeInsets.only(left: 00.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   FloatingActionButton(
                     child: Text("START"),
@@ -87,22 +87,21 @@ class driverspeeddailState extends State<driverspeeddail>
                       print(view.starttime);
                     },
                   ),
-                  FloatingActionButton(
-                      heroTag: "FABend",
-                    backgroundColor:Color(0xFF59981A),
-                      child: Text(
-                        "END",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'DancingScript',
+                  Padding(
+                    padding: const EdgeInsets.only(left:90.0),
+                    child: FloatingActionButton(
+                        heroTag: "FABend",
+                      backgroundColor:Color(0xFF59981A),
+                        child: Text(
+                          "END",
+
                         ),
-                      ),
-                      onPressed: () {
-                        view.locationSubscription.cancel();
-                        view.endtime = view.getTime();
-                        print(view.endtime);
-                      })
+                        onPressed: () {
+                          view.locationSubscription.cancel();
+                          view.endtime = view.getTime();
+                          print(view.endtime);
+                        }),
+                  )
                 ],
               ),
             ),

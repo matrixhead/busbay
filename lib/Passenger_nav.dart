@@ -49,7 +49,7 @@ class _PNavState extends State<PNav> {
               Icons.directions_bus,
 
             ),
-            backgroundColor: Colors.blueAccent,
+            backgroundColor:   Color(0xFF719F1E),
             label: "BUS",
 
           ),
@@ -58,14 +58,14 @@ class _PNavState extends State<PNav> {
               Icons.account_circle_rounded
             ),
             label: "profile",
-            backgroundColor: Colors.blueAccent,
+            backgroundColor:   Color(0xFF719F1E),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
             ),
             label: "settings",
-            backgroundColor: Colors.blueAccent,
+            backgroundColor:   Color(0xFF719F1E),
           ),
         ],
         currentIndex: _selectedIndex,
