@@ -57,7 +57,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             // color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -71,7 +71,7 @@ class _StudentRegiState extends State<StudentRegi> {
           child: TextFormField(
             keyboardType: TextInputType.text,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
@@ -79,11 +79,11 @@ class _StudentRegiState extends State<StudentRegi> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.assignment_ind_sharp,
-                color: Colors.white,
+                color: Colors.black,
               ),
               hintText: 'Your Name',
               hintStyle: TextStyle(
-                color: Colors.white54,
+                color: Colors.black,
                 fontFamily: 'OpenSans',
               ),
             ),
@@ -115,7 +115,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             //color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -127,18 +127,18 @@ class _StudentRegiState extends State<StudentRegi> {
           ),
           height: 60.0,
           child: DropdownButtonFormField(
-            dropdownColor: Color(0xFF6200EA),
+            dropdownColor: Colors.white,
             isExpanded: true,
             decoration: InputDecoration.collapsed(hintText: ''),
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontFamily: 'OpenSans',
             ),
             value: Provider.of<StudentRegisterView>(context, listen: false)
                 .selectedDepartment,
             icon: Icon(Icons.arrow_drop_down_rounded),
             iconSize: 30,
-            iconEnabledColor: Colors.white,
+            iconEnabledColor: Colors.black,
             elevation: 16,
             onChanged: (String newValue) {
               Provider.of<StudentRegisterView>(context, listen: false)
@@ -170,7 +170,7 @@ class _StudentRegiState extends State<StudentRegi> {
                     ),
                     Text(
                       value,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ],
                 ),
@@ -191,7 +191,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             // color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -205,18 +205,18 @@ class _StudentRegiState extends State<StudentRegi> {
           child: Consumer<StudentRegisterView>(builder: (context, view, child) {
             return DropdownButtonFormField(
               //dropdownColor: Color(0xFF6200EA),
-              dropdownColor: Colors.blueGrey,
+              dropdownColor: Colors.white,
               isExpanded: true,
               decoration: InputDecoration.collapsed(hintText: ''),
 
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontFamily: 'OpenSans',
               ),
               value: view.selectedRoute,
               icon: Icon(Icons.arrow_drop_down_rounded),
               iconSize: 30,
-              iconEnabledColor: Colors.white,
+              iconEnabledColor: Colors.black,
               elevation: 16,
               onChanged: (String newValue) {
                 view.selectedRoute = newValue;
@@ -241,7 +241,7 @@ class _StudentRegiState extends State<StudentRegi> {
                       ),
                       Text(
                         value,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ],
                   ),
@@ -263,7 +263,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             // color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -277,18 +277,18 @@ class _StudentRegiState extends State<StudentRegi> {
           child: Consumer<StudentRegisterView>(builder: (context, view, child) {
             return DropdownButtonFormField(
               //dropdownColor: Color(0xFF6200EA),
-              dropdownColor: Colors.blueGrey,
+              dropdownColor: Colors.white,
               isExpanded: true,
               decoration: InputDecoration.collapsed(hintText: ''),
 
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontFamily: 'OpenSans',
               ),
               value: view.selectedstop,
               icon: Icon(Icons.arrow_drop_down_rounded),
               iconSize: 30,
-              iconEnabledColor: Colors.white,
+              iconEnabledColor: Colors.black,
               elevation: 16,
               onChanged: (String newValue) {
                 view.selectedstop = newValue;
@@ -312,7 +312,7 @@ class _StudentRegiState extends State<StudentRegi> {
                       ),
                       Text(
                         value,
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ],
                   ),
@@ -342,7 +342,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             //color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -356,7 +356,7 @@ class _StudentRegiState extends State<StudentRegi> {
           child: TextFormField(
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontFamily: 'OpenSans',
             ),
             decoration: InputDecoration(
@@ -364,11 +364,11 @@ class _StudentRegiState extends State<StudentRegi> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.email,
-                color: Colors.white,
+                color: Colors.black,
               ),
               hintText: 'Enter your Email',
               hintStyle: TextStyle(
-                color: Colors.white54,
+                color: Colors.black,
                 fontFamily: 'OpenSans',
               ),
             ),
@@ -408,7 +408,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             //color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -422,7 +422,7 @@ class _StudentRegiState extends State<StudentRegi> {
           child: TextFormField(
               obscureText: true,
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontFamily: 'OpenSans',
               ),
               decoration: InputDecoration(
@@ -430,11 +430,11 @@ class _StudentRegiState extends State<StudentRegi> {
                 contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
                   Icons.lock,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 hintText: 'Enter your Password',
                 hintStyle: TextStyle(
-                  color: Colors.white54,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                 ),
               ),
@@ -474,7 +474,7 @@ class _StudentRegiState extends State<StudentRegi> {
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             //color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -488,7 +488,7 @@ class _StudentRegiState extends State<StudentRegi> {
           child: TextFormField(
               obscureText: true,
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontFamily: 'OpenSans',
               ),
               decoration: InputDecoration(
@@ -496,11 +496,11 @@ class _StudentRegiState extends State<StudentRegi> {
                 contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(
                   Icons.lock,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 hintText: 'Reneter Your Password',
                 hintStyle: TextStyle(
-                  color: Colors.white54,
+                  color: Colors.black,
                   fontFamily: 'OpenSans',
                 ),
               ),
@@ -563,7 +563,7 @@ class _StudentRegiState extends State<StudentRegi> {
           'LOGIN',
           style: TextStyle(
             //color: Color(0xFF6200EA),
-            color: Colors.blueGrey,
+            color: Colors.green,
             letterSpacing: 1.5,
             fontSize: 18.0,
             fontWeight: FontWeight.bold,
@@ -625,12 +625,11 @@ class _StudentRegiState extends State<StudentRegi> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF6200EA),
-                  Color(0xFF651FFF),
-                  Color(0xFF512DA8),
-                  Color(0xFF4527A0),
+                  Color(0xFFD5CE58),
+                  Color(0xFF719F1E),
+
                 ],
-                stops: [0.1, 0.4, 0.7, 0.9],
+
               ),
             ),
           ),

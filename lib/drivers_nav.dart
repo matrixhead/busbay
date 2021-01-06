@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'DriverBusList.dart';
 import 'Driver/profile.dart';
@@ -45,8 +46,7 @@ class _BNavState extends State<BNav> {
               Icons.directions_bus,
               
             ),
-            backgroundColor: Color.fromRGBO(
-                39, 105, 171, 1),
+            backgroundColor:   Color(0xFF719F1E),
             label: "BUS",
             
           ),
@@ -55,15 +55,14 @@ class _BNavState extends State<BNav> {
               Icons.account_circle_rounded
             ),
             label: "profile",
-            backgroundColor: Colors.blueAccent,
+            backgroundColor:   Color(0xFF719F1E),
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
             ),
             label: "settings",
-            backgroundColor: Color.fromRGBO(
-                39, 105, 171, 1),
+            backgroundColor:   Color(0xFF719F1E),
           ),
         ],
         currentIndex: _selectedIndex,

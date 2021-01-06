@@ -51,8 +51,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(39, 105, 171, 1),
-                  Color.fromRGBO(255, 255, 255, 1),
+                  Color(0xFF719F1E),
+                  Color(0xFFD5CE58),
+
                 ],
                 begin: FractionalOffset.bottomCenter,
                 end: FractionalOffset.topCenter,
@@ -101,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       'My\nProfile',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: Colors.white,
                         fontSize: 34,
                         fontFamily: 'NiseBuschGardens',
                       ),
@@ -138,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       Text(
                                         userData.name ?? 'Nill',
                                         style: TextStyle(
-                                          color: Color.fromRGBO(39, 105, 171, 1),
+                                          color: Color(0xFFD5CE58),
                                           fontFamily: 'Courgette',
                                           fontSize: 35,
                                         ),
@@ -155,16 +156,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               Text(
                                                 'Bus Number',
                                                 style: TextStyle(
-                                                  color: Colors.grey[700],
+                                                  color: Colors.white,
                                                   fontFamily: 'Montserrat',
-                                                  fontSize: 25,
+                                                  fontSize: 20,
                                                 ),
                                               ),
                                               Text(
                                                 '1',
                                                 style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      39, 105, 171, 1),
+                                                  color: Color(0xFFD5CE58),
                                                   fontFamily: 'Montserrat',
                                                   fontSize: 25,
                                                 ),

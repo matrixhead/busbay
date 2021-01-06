@@ -51,8 +51,9 @@ class ProScreen extends State {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Color.fromRGBO(39, 105, 171, 1),
-                        Color.fromRGBO(255, 255, 255, 1),
+                        Color(0xFF719F1E),
+                        Color(0xFFD5CE58),
+
                       ],
                       begin: FractionalOffset.bottomCenter,
                       end: FractionalOffset.topCenter,
@@ -102,7 +103,7 @@ class ProScreen extends State {
                               'My\nProfile',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: Colors.white,
                                 fontSize: 34,
                                 fontFamily: 'NiseBuschGardens',
                               ),
@@ -129,7 +130,7 @@ class ProScreen extends State {
                                           width: innerWidth,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(30),
-                                            color: Color(0xFF212121),
+                                              color: Color(0xFF212121),
                                           ),
                                           child: Column(
                                             children: [
@@ -139,7 +140,7 @@ class ProScreen extends State {
                                                   Text(
                                                       userData.name,
                                               style: TextStyle(
-                                                color: Color.fromRGBO(39, 105, 171, 1),
+                                                color: Color(0xFFD5CE58),
                                                 fontFamily: 'Courgette',
                                                 fontSize: 35,
                                               ),
@@ -157,7 +158,7 @@ class ProScreen extends State {
                                                         userData.email,
                                                         //'Department',
                                                         style: TextStyle(
-                                                          color: Colors.white,
+                                                          color: Color(0xFFD5CE58),
                                                           fontFamily: 'Montserrat',
                                                           fontSize: 18,
                                                         ),
@@ -166,8 +167,7 @@ class ProScreen extends State {
                                                         userData.department ?? 'Nill',
                                                         //'MCA',
                                                         style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              39, 105, 171, 1),
+                                                          color: Color(0xFFD5CE58),
                                                           fontFamily: 'Montserrat',
                                                           fontSize: 25,
                                                         ),

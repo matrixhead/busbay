@@ -33,7 +33,7 @@ class driverspeeddailState extends State<driverspeeddail>
           fontSize: 25,
         ),
       ),
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Color(0xFF81B622),
       onTap: () {
         Provider.of<DriverMapView>(context, listen: false).showbus(bus);
       },
@@ -55,7 +55,8 @@ class driverspeeddailState extends State<driverspeeddail>
           body: Scaffold(
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
-              backgroundColor: Colors.blue[700],
+              backgroundColor: Color(0xFF59981A),
+
             ),
             body: GoogleMap(
               scrollGesturesEnabled: true,
@@ -71,12 +72,14 @@ class driverspeeddailState extends State<driverspeeddail>
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: Padding(
-              padding: const EdgeInsets.all(0.0),
+              padding: const EdgeInsets.only(left: 00.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   FloatingActionButton(
                     child: Text("START"),
+
+                    backgroundColor:Color(0xFF59981A) ,
                     heroTag: "FABstart",
                     onPressed: () {
                       view.getCurrentLocation();
@@ -84,26 +87,28 @@ class driverspeeddailState extends State<driverspeeddail>
                       print(view.starttime);
                     },
                   ),
-                  FloatingActionButton(
-                      heroTag: "FABend",
-                      child: Text(
-                        "END",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'DancingScript',
+                  Padding(
+                    padding: const EdgeInsets.only(left:90.0),
+                    child: FloatingActionButton(
+                        heroTag: "FABend",
+                      backgroundColor:Color(0xFF59981A),
+                        child: Text(
+                          "END",
+
                         ),
-                      ),
-                      onPressed: () {
-                        view.locationSubscription.cancel();
-                        view.endtime = view.getTime();
-                        print(view.endtime);
-                      })
+                        onPressed: () {
+                          view.locationSubscription.cancel();
+                          view.endtime = view.getTime();
+                          print(view.endtime);
+                        }),
+                  )
                 ],
               ),
             ),
           ),
           floatingActionButton: SpeedDial(
+            backgroundColor: Color(0xFF3D550C),
+            marginRight: 50,
             animatedIcon: AnimatedIcons.menu_close,
             animatedIconTheme: IconThemeData(size: 22.0),
             curve: Curves.bounceIn,

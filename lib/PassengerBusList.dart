@@ -10,6 +10,8 @@ import 'logic/service_locator.dart';
 
 import 'package:flushbar/flushbar.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 class passengerspeeddail extends StatefulWidget {
   @override
   passengerspeeddailState createState() => passengerspeeddailState();
@@ -19,8 +21,20 @@ class passengerspeeddailState extends State<passengerspeeddail>
     with TickerProviderStateMixin,AutomaticKeepAliveClientMixin  {
   PassengerMapView mapView = serviceLocator<PassengerMapView>();
 
+
+  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
+  void fcmSubscribe() {
+    firebaseMessaging.subscribeToTopic('Passenger');
+    firebaseMessaging.subscribeToTopic('Passenger1');
+  }
+
+  void fcmUnSubscribe() {
+    firebaseMessaging.unsubscribeFromTopic('Passenger');
+  }
+
   void _showflushbar() {
-    final flusbar =  new Flushbar(
+     Flushbar(
       title: "Bus No1",
       message: "started at 8:30AM",
       duration: Duration(seconds: 4),
@@ -50,13 +64,16 @@ class passengerspeeddailState extends State<passengerspeeddail>
     return SpeedDialChild(
       child: Text(
         bus.id.toString(),
+
         textAlign: TextAlign.center,
+
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
+
       ),
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor:Color(0xFF81B622),
       onTap: () {
         Provider.of<PassengerMapView>(context, listen: false).showbus(bus);
       },
@@ -65,6 +82,13 @@ class passengerspeeddailState extends State<passengerspeeddail>
       labelBackgroundColor: Colors.white,
     );
   }
+
+
+ // void initState() {
+  //  super.initState();
+   // _showflushbar();
+  //  WidgetsBinding.instance.addPostFrameCallback((_) => _showflushbar());
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +103,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
             //key:_scaffoldkey,
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
-              backgroundColor: Colors.blue[700],
+              backgroundColor:   Color(0xFF719F1E),
             ),
             body: GoogleMap(
               mapType: MapType.normal,
@@ -92,18 +116,21 @@ class passengerspeeddailState extends State<passengerspeeddail>
               markers: Set.of(view.markerList.values.toList() ?? []),
               circles: Set.of(view.circleList ?? []),
             ),
-
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add_location),
+                backgroundColor:Color(0xFF59981A) ,
                 onPressed: () {
                   view.dropPassengerMarker();
-                  //_showsnackbar();
-                  _showflushbar();
+                  //_showflushbar();
+
+                  fcmSubscribe();
+
                 }),
           ),
           floatingActionButton: SpeedDial(
+            backgroundColor: Color(0xFF3D550C),
             animatedIcon: AnimatedIcons.menu_close,
             animatedIconTheme: IconThemeData(size: 22.0),
             curve: Curves.bounceIn,

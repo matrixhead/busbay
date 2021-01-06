@@ -1,24 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:busbay/logic/Services/Model.dart';
-import 'package:busbay/logic/Services/user.dart';
-import 'package:busbay/logic/Services/pro.dart';
-import 'package:busbay/logic/Services/userData.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:busbay/main.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:busbay/logic/Services/ChangePassword.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:busbay/logic/Services/user.dart';
+import 'package:busbay/logic/Services/userData.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:busbay/main.dart';
 
 class SettingsPassenger extends StatefulWidget {
   @override
   _SettingsPassengerState createState() => _SettingsPassengerState();
 }
 
-class _SettingsPassengerState extends State<SettingsPassenger> {
+class _SettingsPassengerState extends State<SettingsPassenger> with AutomaticKeepAliveClientMixin  {
   bool _keyboardVisible = false;
   double windowWidth = 0;
   double windowHeight = 0;
@@ -54,7 +51,7 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
         return AnimatedContainer(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
           width: windowWidth,
-         // height: windowHeight,
+          // height: windowHeight,
           height: _keyboardVisible ? windowHeight : windowHeight-350 ,
           curve: Curves.fastLinearToSlowEaseIn,
           duration: Duration(milliseconds: 1000),
@@ -71,161 +68,167 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
     if(user==null){
       return Center(child: CircularProgressIndicator());
     }
+    super.build(context);
     return StreamBuilder<UserData>(
-      stream: UserService(uid: user.uid).userData,
-      builder: (context, snapshot) {
-        if(snapshot.hasData) {
-          UserData userData = snapshot.data;
-          return Theme(
-            isMaterialAppTheme: true,
-            data: ThemeData(
-              brightness: _getBrightness(),
-            ),
-            child: Scaffold(
-              backgroundColor: _dark ? null : Colors.grey.shade200,
-              appBar: AppBar(
-                elevation: 0,
+        stream: UserService(uid: user.uid).userData,
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            UserData userData = snapshot.data;
+            return Theme(
+              isMaterialAppTheme: true,
+              data: ThemeData(
                 brightness: _getBrightness(),
-                iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
-                backgroundColor: Colors.transparent,
-                title: Text(
-                  'Settings',
-                  style: TextStyle(color: _dark ? Colors.white : Colors.black),
-                ),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(FontAwesomeIcons.moon),
-                    onPressed: () {
-                      setState(() {
-                        _dark = !_dark;
-                      });
-                    },
-                  )
-                ],
               ),
-              body: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromRGBO(39, 105, 171, 1),
-                          Color.fromRGBO(255, 255, 255, 1),
-                        ],
-                        begin: FractionalOffset.bottomCenter,
-                        end: FractionalOffset.topCenter,
+              child: Scaffold(
+                backgroundColor: _dark ? null : Colors.grey.shade200,
+                appBar: AppBar(
+
+                  elevation: 0,
+                  brightness: _getBrightness(),
+                  iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
+                  backgroundColor:Color(0xFFD5CE58),
+                  title: Text(
+                    'Settings',
+                    style: TextStyle(color: _dark ? Colors.white : Colors.black),
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(FontAwesomeIcons.moon),
+                      onPressed: () {
+                        setState(() {
+                          _dark = !_dark;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                body: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF719F1E),
+                            Color(0xFFD5CE58),
+
+
+
+                          ],
+                          begin: FractionalOffset.bottomCenter,
+                          end: FractionalOffset.topCenter,
+                        ),
                       ),
                     ),
-                  ),
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Card(
-                          elevation: 8.0,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          color: Colors.redAccent,
-                          child: ListTile(
-                            onTap: () {
-                              //open edit profile
-                            },
-                            title: Text(
-                              userData.name,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            leading: CircleAvatar(
-                              child: Text(userData.name[0])
-                            ),
-
-                          ),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Card(
-                          elevation: 4.0,
-                          margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(
-                                  Icons.lock_outline,
-                                  color: Colors.purple,
+                    SingleChildScrollView(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Card(
+                            elevation: 8.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            color: Color(0xFFECF87F),
+                            child: ListTile(
+                              onTap: () {
+                                //open edit profile
+                              },
+                              title: Text(
+                                userData.name,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w800,
                                 ),
-                                title: Text("Change Password"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                onTap: () => _showChangePassword(),
+                              ),
+                              leading: CircleAvatar(
+                                child: Text(userData.name[0]),
+                                backgroundColor: Color(0xFF3D550C),
+                              ),
+
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Card(
+                            elevation: 4.0,
+                            margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.lock_outline,
+                                    color: Color(0xFF59981A),
+                                  ),
+                                  title: Text("Change Password"),
+                                  trailing: Icon(Icons.keyboard_arrow_right),
+                                  onTap: () => _showChangePassword(),
                                   //{
                                   //open change password},
-                              ),
-                              _buildDivider(),
-                              ListTile(
-                                leading: Icon(
-                                  FontAwesomeIcons.language,
-                                  color: Colors.purple,
                                 ),
-                                title: Text("Change Language"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                onTap: () {
-                                  //open change language
-                                },
-                              ),
-                              _buildDivider(),
-                              ListTile(
-                                leading: Icon(
-                                  Icons.location_on,
-                                  color: Colors.purple,
+                                _buildDivider(),
+                                ListTile(
+                                  leading: Icon(
+                                    FontAwesomeIcons.language,
+                                    color: Color(0xFF59981A),
+                                  ),
+                                  title: Text("Change Language"),
+                                  trailing: Icon(Icons.keyboard_arrow_right),
+                                  onTap: () {
+                                    //open change language
+                                  },
                                 ),
-                                title: Text("Change Location"),
-                                trailing: Icon(Icons.keyboard_arrow_right),
-                                onTap: () {
-                                  //open change location
-                                },
-                              ),
-                            ],
+                                _buildDivider(),
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.location_on,
+                                    color: Color(0xFF59981A),
+                                  ),
+                                  title: Text("Change Location"),
+                                  trailing: Icon(Icons.keyboard_arrow_right),
+                                  onTap: () {
+                                    //open change location
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 20.0),
-                        Text(
-                          "Notification Settings",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.indigo,
+                          const SizedBox(height: 20.0),
+                          Text(
+                            "Notification Settings",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF3D550C),
+                            ),
                           ),
-                        ),
-                        SwitchListTile(
-                          activeColor: Colors.purple,
-                          contentPadding: const EdgeInsets.all(0),
-                          value: true,
-                          title: Text("Received notification"),
-                          onChanged: (val) {},
-                        ),
-                        SwitchListTile(
-                          activeColor: Colors.purple,
-                          contentPadding: const EdgeInsets.all(0),
-                          value: true,
-                          title: Text("Received Offer Notification"),
-                          onChanged: (val) {},
-                        ),
-                        SwitchListTile(
-                          activeColor: Colors.purple,
-                          contentPadding: const EdgeInsets.all(0),
-                          value: true,
-                          title: Text("Received App Updates"),
-                          onChanged: null,
-                        ),
-                        const SizedBox(height: 60.0),
-                      ],
+                          SwitchListTile(
+                            activeColor: Color(0xFF59981A),
+                            contentPadding: const EdgeInsets.all(0),
+                            value: true,
+                            title: Text("Received notification"),
+                            onChanged: (val) {},
+                          ),
+                          SwitchListTile(
+                            activeColor: Color(0xFF59981A),
+                            contentPadding: const EdgeInsets.all(0),
+                            value: true,
+                            title: Text("Received Offer Notification"),
+                            onChanged: (val) {},
+                          ),
+                          SwitchListTile(
+                            activeColor: Color(0xFF59981A),
+                            contentPadding: const EdgeInsets.all(0),
+                            value: true,
+                            title: Text("Received App Updates"),
+                            onChanged: null,
+                          ),
+                          const SizedBox(height: 60.0),
+                        ],
+                      ),
                     ),
-                  ),
-                  /*  Positioned(
+                    /*  Positioned(
                   bottom: -20,
                   left: -20,
                   child: Container(
@@ -251,15 +254,15 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
                     },
                   ),
                 ) */
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        }else{
-          return LinearProgressIndicator();
-        }
+            );
+          }else{
+            return LinearProgressIndicator();
+          }
 
-      }
+        }
     );
   }
 
@@ -270,7 +273,8 @@ class _SettingsPassengerState extends State<SettingsPassenger> {
       ),
       width: double.infinity,
       height: 1.0,
-      color: Colors.grey.shade400,
+      color:Color(0xFF59981A),
     );
   }
+  bool get wantKeepAlive => true;
 }
