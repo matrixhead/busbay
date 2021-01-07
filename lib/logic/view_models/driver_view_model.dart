@@ -59,7 +59,7 @@ class DriverMapView extends ChangeNotifier {
 
   void loadBusData() async {
     busList = await getAllBus();
-    selectDefaultBus();
+    // selectDefaultBus();
     notifyListeners();
   }
 
@@ -94,6 +94,13 @@ class DriverMapView extends ChangeNotifier {
         strokeColor: Colors.blue,
         center: latlng,
         fillColor: Colors.blue.withAlpha(70)));
+  }
+
+  void startPressed() {
+    AuthService authService = serviceLocator<AuthService>();
+    String currentUser = authService.getCurrentUserid();
+    updateRunStatus(selectedBus, currentUser);
+    getCurrentLocation();
   }
 
   void getCurrentLocation() async {
@@ -167,13 +174,13 @@ class DriverMapView extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectDefaultBus() {
-    AuthService authService = serviceLocator<AuthService>();
-    String currentUser = authService.getCurrentUserid();
-    busList.forEach((element) {
-      if (currentUser == element.driver) {
-        showbus(element);
-      }
-    });
-  }
+  // void selectDefaultBus() {
+  //   AuthService authService = serviceLocator<AuthService>();
+  //   String currentUser = authService.getCurrentUserid();
+  //   busList.forEach((element) {
+  //     if (currentUser == element.driver) {
+  //       showbus(element);
+  //     }
+  //   });
+  // }
 }

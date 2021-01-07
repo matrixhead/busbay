@@ -20,13 +20,15 @@ class Bus {
   final String docID;
   final String driver;
   final Map<String, dynamic> stops;
+  final Map<String, dynamic> status;
 
   Bus.fromSnapShot(DocumentSnapshot snapshot)
       : docID = snapshot.id,
         id = snapshot.data()['id'],
         name = snapshot.data()['name'],
         driver = snapshot.data()['driver'],
-        stops = snapshot.data()['stops'];
+        stops = snapshot.data()['stops'],
+        status = snapshot.data()['status'];
 }
 
 void createUserData(String uid, email, name, department, route, stop) async {
@@ -81,6 +83,14 @@ void updateDroppedPins(Bus bus, String uid, LocationData newLocalData) async {
       .doc("droppedpins");
   ref.set({uid: GeoPoint(newLocalData.latitude, newLocalData.longitude)},
       SetOptions(merge: true));
+}
+
+void updateRunStatus(Bus bus, String uid) async {
+  DocumentReference ref =
+      FirebaseFirestore.instance.collection("buses").doc(bus.docID);
+  ref.set({
+    "status": {"running": true}
+  }, SetOptions(merge: true));
 }
 
 Stream getPins(Bus bus) {

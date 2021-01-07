@@ -32,8 +32,8 @@ class MainViewModel extends ChangeNotifier {
   void subscribeToNotification() async {
     String uid = authService.getCurrentUserid();
     String route = await getUserRoute(uid);
-    print(route);
+    String sanitised = route.replaceFirst(RegExp('-'), '');
     FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-    firebaseMessaging.subscribeToTopic(route);
+    firebaseMessaging.subscribeToTopic(sanitised);
   }
 }

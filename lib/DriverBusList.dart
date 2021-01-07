@@ -56,7 +56,6 @@ class driverspeeddailState extends State<driverspeeddail>
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
               backgroundColor: Color(0xFF59981A),
-
             ),
             body: GoogleMap(
               scrollGesturesEnabled: true,
@@ -78,23 +77,21 @@ class driverspeeddailState extends State<driverspeeddail>
                 children: <Widget>[
                   FloatingActionButton(
                     child: Text("START"),
-
-                    backgroundColor:Color(0xFF59981A) ,
+                    backgroundColor: Color(0xFF59981A),
                     heroTag: "FABstart",
                     onPressed: () {
-                      view.getCurrentLocation();
+                      view.startPressed();
                       view.starttime = view.getTime();
                       print(view.starttime);
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left:90.0),
+                    padding: const EdgeInsets.only(left: 90.0),
                     child: FloatingActionButton(
                         heroTag: "FABend",
-                      backgroundColor:Color(0xFF59981A),
+                        backgroundColor: Color(0xFF59981A),
                         child: Text(
                           "END",
-
                         ),
                         onPressed: () {
                           view.locationSubscription.cancel();

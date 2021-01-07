@@ -18,62 +18,44 @@ class passengerspeeddail extends StatefulWidget {
 }
 
 class passengerspeeddailState extends State<passengerspeeddail>
-    with TickerProviderStateMixin,AutomaticKeepAliveClientMixin  {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   PassengerMapView mapView = serviceLocator<PassengerMapView>();
 
-
-  FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-
-  void fcmSubscribe() {
-    firebaseMessaging.subscribeToTopic('Passenger');
-    firebaseMessaging.subscribeToTopic('Passenger1');
-  }
-
-  void fcmUnSubscribe() {
-    firebaseMessaging.unsubscribeFromTopic('Passenger');
-  }
-
   void _showflushbar() {
-     Flushbar(
+    Flushbar(
       title: "Bus No1",
       message: "started at 8:30AM",
       duration: Duration(seconds: 4),
-      flushbarPosition:FlushbarPosition.TOP,
+      flushbarPosition: FlushbarPosition.TOP,
       backgroundColor: Colors.blueAccent,
     )..show(context);
   }
 
+  // final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
+  // _showsnackbar(){
+  //   final snackbar = new SnackBar(
+  //     content:new Text("demo snackbar"),
+  //   duration: new Duration (seconds: 4),
+  //   backgroundColor: Colors.blue,
 
- // final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
- // _showsnackbar(){
- //   final snackbar = new SnackBar(
-   //     content:new Text("demo snackbar"),
-     //   duration: new Duration (seconds: 4),
-     //   backgroundColor: Colors.blue,
-
-      //  action: new SnackBarAction(label: 'close', onPressed: (){
-       //   print("snackbar closed");}
-      //  ),
+  //  action: new SnackBarAction(label: 'close', onPressed: (){
+  //   print("snackbar closed");}
+  //  ),
   //  );
 
   //  _scaffoldkey.currentState.showSnackBar(snackbar);
-
-
 
   SpeedDialChild buildSpeedDialChild(Bus bus, context) {
     return SpeedDialChild(
       child: Text(
         bus.id.toString(),
-
         textAlign: TextAlign.center,
-
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 25,
         ),
-
       ),
-      backgroundColor:Color(0xFF81B622),
+      backgroundColor: Color(0xFF81B622),
       onTap: () {
         Provider.of<PassengerMapView>(context, listen: false).showbus(bus);
       },
@@ -83,10 +65,9 @@ class passengerspeeddailState extends State<passengerspeeddail>
     );
   }
 
-
- // void initState() {
+  // void initState() {
   //  super.initState();
-   // _showflushbar();
+  // _showflushbar();
   //  WidgetsBinding.instance.addPostFrameCallback((_) => _showflushbar());
 //  }
 
@@ -103,7 +84,7 @@ class passengerspeeddailState extends State<passengerspeeddail>
             //key:_scaffoldkey,
             appBar: AppBar(
               title: Text(view.selectedBus?.name ?? "select a bus"),
-              backgroundColor:   Color(0xFF719F1E),
+              backgroundColor: Color(0xFF719F1E),
             ),
             body: GoogleMap(
               mapType: MapType.normal,
@@ -120,13 +101,10 @@ class passengerspeeddailState extends State<passengerspeeddail>
                 FloatingActionButtonLocation.startFloat,
             floatingActionButton: FloatingActionButton(
                 child: Icon(Icons.add_location),
-                backgroundColor:Color(0xFF59981A) ,
+                backgroundColor: Color(0xFF59981A),
                 onPressed: () {
                   view.dropPassengerMarker();
                   //_showflushbar();
-
-                  fcmSubscribe();
-
                 }),
           ),
           floatingActionButton: SpeedDial(
